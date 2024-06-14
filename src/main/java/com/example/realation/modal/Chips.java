@@ -6,8 +6,6 @@ import java.util.Date;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.IdClass;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import lombok.AllArgsConstructor;
@@ -18,29 +16,22 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Chips implements Serializable{
-	/**
-	 * 
-	 */
+public class Chips implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
 	private String chip;
 
-	private int pid;
-	private String firstName;
-	private String lastName;
+	private String pid;
+	private String name;
 	@Temporal(TemporalType.DATE)
 	private Date birthdate;
 	private String gender;
 	private String race;
 	private String city;
-	@Column(columnDefinition = "integer default -1")
-	private long phone;
+	private String phone;
 	private String email;
+	@Column(columnDefinition = "boolean default true")
 	private boolean smsSent;
-
-//	@OneToOne
-//	private Results results;
 
 	public String getChip() {
 		return chip;
@@ -50,28 +41,20 @@ public class Chips implements Serializable{
 		this.chip = chip;
 	}
 
-	public int getPid() {
+	public String getPid() {
 		return pid;
 	}
 
-	public void setPid(int pid) {
+	public void setPid(String pid) {
 		this.pid = pid;
 	}
 
-	public String getFirstName() {
-		return firstName;
+	public String getName() {
+		return name;
 	}
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public Date getBirthdate() {
@@ -106,11 +89,11 @@ public class Chips implements Serializable{
 		this.city = city;
 	}
 
-	public long getPhone() {
+	public String getPhone() {
 		return phone;
 	}
 
-	public void setPhone(long phone) {
+	public void setPhone(String phone) {
 		this.phone = phone;
 	}
 
@@ -129,5 +112,6 @@ public class Chips implements Serializable{
 	public void setSmsSent(boolean smsSent) {
 		this.smsSent = smsSent;
 	}
+	
 
 }

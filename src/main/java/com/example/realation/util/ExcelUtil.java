@@ -2,6 +2,7 @@ package com.example.realation.util;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -14,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.example.realation.modal.Chips;
 
 public class ExcelUtil {
+
 	public static boolean isExcelFormat(MultipartFile file) {
 		String fileType = file.getContentType();
 		System.out.println(fileType);
@@ -29,59 +31,125 @@ public class ExcelUtil {
 			XSSFSheet sheet = workbook.getSheetAt(0);
 			int rowNumber = 0;
 			Iterator<Row> iterator = sheet.iterator();
-			while (iterator.hasNext()) {
-				Row row = iterator.next();
-				if (rowNumber == 0) {
-					rowNumber++;
-					continue;
-				}
-				System.out.println(row.getLastCellNum());
-				Iterator<Cell> cells = row.iterator();
-				int cid = 0;
-				Chips chips = new Chips();
-				while (cells.hasNext()) {
-					Cell cell = cells.next();
-
-					switch (cid) {
-					case 0:
-						chips.setChip(cell.getStringCellValue());
-						break;
-					case 1:
-						chips.setPid(Integer.parseInt(cell.getStringCellValue()));
-						break;
-					case 2:
-						chips.setFirstName(cell.getStringCellValue());
-						break;
-					case 3:
-						chips.setLastName(cell.getStringCellValue());
-						break;
-					case 4:
-						chips.setBirthdate(cell.getDateCellValue());
-						break;
-					case 5:
-						chips.setGender(cell.getStringCellValue());
-						break;
-					case 6:
-						chips.setCity(cell.getStringCellValue());
-						break;
-					case 7:
-						chips.setEmail(cell.getStringCellValue());
-						break;
-					case 8:
-						chips.setPhone((long) cell.getNumericCellValue());
-						break;
-					case 9:
-						chips.setRace(cell.getStringCellValue());
-						break;
-					case 10:
-						chips.setSmsSent(cell.getBooleanCellValue());
-						break;
-					default:
-						break;
+			try {
+				while (iterator.hasNext()) {
+					Row row = iterator.next();
+					if (rowNumber == 0) {
+						rowNumber += 2;
+						continue;
 					}
-					cid++;
+					Iterator<Cell> cells = row.iterator();
+					int cid = 0;
+					Chips chips = new Chips();
+					while (cells.hasNext()) {
+						Cell cell = cells.next();
+
+						switch (cid) {
+						case 0:
+							if (cell.getCellType().toString().equals("STRING")) {
+								String chipNumber = cell.getStringCellValue().toString().trim();
+								if (Validate.idChipValide(chipNumber))
+									chips.setChip(cell.getStringCellValue());
+								else {
+									System.out.println("Row " + rowNumber + " Column " + cid + " Is not a valid chip number " + chipNumber);
+								}
+							} else {
+								System.out.println("Row " + rowNumber + " Column " + cid + " Is not a string cell");
+							}
+							break;
+						case 1:
+							if (cell.getCellType().toString().equals("STRING")) {
+								chips.setPid(cell.getStringCellValue().toString().trim());
+							} else {
+								System.out.println("Row " + rowNumber + " Column " + cid + " Is not a string cell");
+							}
+							break;
+						case 2:
+							if (cell.getCellType().toString().equals("STRING")) {
+								String name = cell.getStringCellValue().toString().trim();
+								if (Validate.validateName(name))
+									chips.setName(name);
+								else {
+									System.out.println("Row " + rowNumber + " Column " + cid + " Is not a valid name " + name);
+								}
+							} else {
+								System.out.println("Row " + rowNumber + " Column " + cid + " Is not a string cell");
+							}
+							break;
+						case 3:
+							if (cell.getCellType().toString().equals("NUMERIC")) {
+								Date birthDate = cell.getDateCellValue();
+//						if (Validate.isBirthDateValid(birthDate))
+								chips.setBirthdate(birthDate);
+							} else {
+								System.out.println("Row " + rowNumber + " Column " + cid + " Is not a numeric cell");
+							}
+							break;
+						case 4:
+							if (cell.getCellType().toString().equals("STRING")) {
+								String gender = Validate.validateGender(cell.getStringCellValue().toString().trim());
+								chips.setGender(gender);
+							} else {
+								System.out.println("Row " + rowNumber + " Column " + cid + " Is not a string cell");
+							}
+							break;
+						case 5:
+							if (cell.getCellType().toString().equals("STRING")) {
+								String city = cell.getStringCellValue().toString().trim();
+								if (Validate.validateCityFormat(city))
+									chips.setCity(city);
+								else {
+									System.out.println("Row " + rowNumber + " Column " + cid + " Is not a valid city");
+								}
+							} else {
+								System.out.println("Row " + rowNumber + " Column " + cid + " Is not a string cell");
+							}
+							break;
+						case 6:
+							if (cell.getCellType().toString().equals("STRING")) {
+								String email = cell.getStringCellValue().toString().trim();
+								if (Validate.isEmailValid(email))
+									chips.setEmail(email);
+								else {
+									System.out.println("Row " + rowNumber + " Column " + cid + " Is not a valid email " + email);
+								}
+							} else {
+								System.out.println("Row " + rowNumber + " Column " + cid + " Is not a string cell");
+							}
+							break;
+						case 7:
+							if (cell.getCellType().toString().equals("NUMERIC")) {
+								String phone = String.valueOf((long) cell.getNumericCellValue());
+								if (Validate.isValidIndianMobileNumber(phone))
+									chips.setPhone(phone);
+								else {
+									System.out
+											.println("Row " + rowNumber + " Column " + cid + " Is not a valid phone number " + phone);
+								}
+							} else {
+								System.out.println("Row " + rowNumber + " Column " + cid + " Is not a numeric cell");
+							}
+							break;
+						case 8:
+							if (cell.getCellType().toString().equals("STRING")) {
+								String race = cell.getStringCellValue().toString().trim();
+								chips.setRace(race);
+							} else {
+								System.out.println("Row " + rowNumber + " Column " + cid + " Is not a string cell");
+							}
+							break;
+						default:
+							break;
+						}
+						cid++;
+					}
+					rowNumber++;
+//					break;
+//					list.add(chips);
 				}
-				list.add(chips);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 
 		} catch (Exception e) {
