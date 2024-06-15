@@ -8,6 +8,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import jakarta.validation.constraints.Past;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
@@ -23,12 +24,15 @@ public class Chips implements Serializable {
 
 	private String pid;
 	private String name;
+	@Past
 	@Temporal(TemporalType.DATE)
 	private Date birthdate;
 	private String gender;
 	private String race;
 	private String city;
+	@Column(nullable = false, unique = true)
 	private String phone;
+	@Column(nullable = false, unique = true)
 	private String email;
 	@Column(columnDefinition = "boolean default true")
 	private boolean smsSent;

@@ -1,6 +1,7 @@
 package com.example.realation.util;
 
 import java.io.InputStream;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -28,6 +29,7 @@ public class ExcelUtil {
 		List<Chips> list = new ArrayList<>();
 		try (XSSFWorkbook workbook = new XSSFWorkbook(is)) {
 			System.out.println(workbook.getSheetName(0));
+			System.out.println(workbook.getNumberOfSheets());
 			XSSFSheet sheet = workbook.getSheetAt(0);
 			int rowNumber = 0;
 			Iterator<Row> iterator = sheet.iterator();
@@ -35,6 +37,10 @@ public class ExcelUtil {
 				while (iterator.hasNext()) {
 					Row row = iterator.next();
 					if (rowNumber == 0) {
+						Iterator<Cell> cells = row.iterator();
+						while (cells.hasNext()) {
+							Cell cell = cells.next();
+						}
 						rowNumber += 2;
 						continue;
 					}
@@ -51,7 +57,8 @@ public class ExcelUtil {
 								if (Validate.idChipValide(chipNumber))
 									chips.setChip(cell.getStringCellValue());
 								else {
-									System.out.println("Row " + rowNumber + " Column " + cid + " Is not a valid chip number " + chipNumber);
+									System.out.println("Row " + rowNumber + " Column " + cid
+											+ " Is not a valid chip number " + chipNumber);
 								}
 							} else {
 								System.out.println("Row " + rowNumber + " Column " + cid + " Is not a string cell");
@@ -70,7 +77,8 @@ public class ExcelUtil {
 								if (Validate.validateName(name))
 									chips.setName(name);
 								else {
-									System.out.println("Row " + rowNumber + " Column " + cid + " Is not a valid name " + name);
+									System.out.println(
+											"Row " + rowNumber + " Column " + cid + " Is not a valid name " + name);
 								}
 							} else {
 								System.out.println("Row " + rowNumber + " Column " + cid + " Is not a string cell");
@@ -78,9 +86,15 @@ public class ExcelUtil {
 							break;
 						case 3:
 							if (cell.getCellType().toString().equals("NUMERIC")) {
-								Date birthDate = cell.getDateCellValue();
-//						if (Validate.isBirthDateValid(birthDate))
-								chips.setBirthdate(birthDate);
+								LocalDateTime birthDate = cell.getLocalDateTimeCellValue();
+								if (Validate.isBirthdateValid(birthDate.getYear(), birthDate.getMonthValue(),
+										birthDate.getDayOfMonth()))
+									chips.setBirthdate(new Date(birthDate.getYear(), birthDate.getMonthValue(),
+											birthDate.getDayOfMonth()));
+								else {
+									System.out.println("Row " + rowNumber + " Column " + cid
+											+ " Is not a valid birthdate " + birthDate);
+								}
 							} else {
 								System.out.println("Row " + rowNumber + " Column " + cid + " Is not a numeric cell");
 							}
@@ -111,7 +125,8 @@ public class ExcelUtil {
 								if (Validate.isEmailValid(email))
 									chips.setEmail(email);
 								else {
-									System.out.println("Row " + rowNumber + " Column " + cid + " Is not a valid email " + email);
+									System.out.println(
+											"Row " + rowNumber + " Column " + cid + " Is not a valid email " + email);
 								}
 							} else {
 								System.out.println("Row " + rowNumber + " Column " + cid + " Is not a string cell");
@@ -123,8 +138,8 @@ public class ExcelUtil {
 								if (Validate.isValidIndianMobileNumber(phone))
 									chips.setPhone(phone);
 								else {
-									System.out
-											.println("Row " + rowNumber + " Column " + cid + " Is not a valid phone number " + phone);
+									System.out.println("Row " + rowNumber + " Column " + cid
+											+ " Is not a valid phone number " + phone);
 								}
 							} else {
 								System.out.println("Row " + rowNumber + " Column " + cid + " Is not a numeric cell");

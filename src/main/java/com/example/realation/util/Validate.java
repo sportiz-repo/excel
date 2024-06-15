@@ -1,8 +1,9 @@
 package com.example.realation.util;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -52,34 +53,74 @@ public class Validate {
 		if (city == null || city.isEmpty()) {
 			return false;
 		}
-		if(city.length() < 2)
+		if (city.length() < 2)
 			return false;
 		Pattern pattern = Pattern.compile("^[a-zA-Z]+(?:[\\s-][a-zA-Z]+)*$");
 		return pattern.matcher(city).matches();
 	}
 
-	public static boolean isBirthDateValid(String dobString) {
-		try {
-			// Parse the date string
-			LocalDate dob = LocalDate.parse(dobString, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+	/*
+	 * public static boolean isBirthDateValid(String dobString) { try { // Parse the
+	 * date string LocalDate dob = LocalDate.parse(dobString,
+	 * DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+	 * 
+	 * // Check format (YYYY-MM-DD) if
+	 * (dob.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")).equals(dobString) ==
+	 * false) { return false; }
+	 * 
+	 * // Minimum date: 6 months before today LocalDate minDate =
+	 * LocalDate.now().minusMonths(6);
+	 * 
+	 * System.out.println(dob.isBefore(LocalDate.now()));
+	 * System.out.println(dob.isAfter(minDate));
+	 * 
+	 * // Valid if DOB is in the past and at least 6 months old return
+	 * dob.isBefore(LocalDate.now()) && dob.isBefore(minDate); } catch
+	 * (DateTimeParseException e) { // Invalid date format return false; } }
+	 */
 
-			// Check format (YYYY-MM-DD)
-			if (dob.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")).equals(dobString) == false) {
-				return false;
-			}
+	/*
+	 * public static boolean isDateValid(Date dob) { final int MIN_AGE = 6; final
+	 * int MAX_AGE = 110; final SimpleDateFormat dateFormat = new
+	 * SimpleDateFormat("dd-MM-yyyy");
+	 * 
+	 * // Check for null input if (dob == null) { return false; }
+	 * 
+	 * // Validate format and convert to LocalDate String dobString =
+	 * dateFormat.format(dob); LocalDate birthDate = LocalDate.parse(dobString);
+	 * 
+	 * // Check if date is in the past if (birthDate.isAfter(LocalDate.now())) {
+	 * return false; }
+	 * 
+	 * LocalDate today = LocalDate.now(); long years =
+	 * ChronoUnit.YEARS.between(birthDate, today);
+	 * 
+	 * return years >= MIN_AGE && years <= MAX_AGE; }
+	 */
+	/*
+	 * public static boolean isDateValid(Date dob) { final int MIN_AGE = 6; final
+	 * int MAX_AGE = 110; System.out.println(dob);
+	 * 
+	 * // Check for null input if (dob == null) { return false; }
+	 * 
+	 * LocalDate birthDate =
+	 * dob.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(); LocalDate today
+	 * = LocalDate.now(); long years = ChronoUnit.YEARS.between(birthDate, today);
+	 * 
+	 * return years >= MIN_AGE && years <= MAX_AGE; }
+	 */
 
-			// Minimum date: 6 months before today
-			LocalDate minDate = LocalDate.now().minusMonths(6);
+	public static boolean isBirthdateValid(int year, int month, int day) {
+		LocalDate birthDate = LocalDate.of(year, month, day);
+		LocalDate today = LocalDate.now();
+		int age = today.getYear() - birthDate.getYear();
 
-			System.out.println(dob.isBefore(LocalDate.now()));
-			System.out.println(dob.isAfter(minDate));
-
-			// Valid if DOB is in the past and at least 6 months old
-			return dob.isBefore(LocalDate.now()) && dob.isBefore(minDate);
-		} catch (DateTimeParseException e) {
-			// Invalid date format
-			return false;
+		// Check if the birthday has not happened this year yet
+		if (birthDate.isAfter(today.withYear(year))) {
+			age--;
 		}
+
+		return age >= 6 && age <= 110;
 	}
 
 	public static boolean isEmailValid(String email) { // Renamed to isEmailValid
