@@ -11,11 +11,20 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.realation.modal.Chips;
+import com.example.realation.service.ExcelDataMistakeService;
 
 public class ExcelUtil {
+	private final ExcelDataMistakeService excelDataMistakeService;
+
+	@Autowired
+	public ExcelUtil(ExcelDataMistakeService excelDataMistakeService) {
+		super();
+		this.excelDataMistakeService = excelDataMistakeService;
+	}
 
 	public static boolean isExcelFormat(MultipartFile file) {
 		String fileType = file.getContentType();
@@ -38,9 +47,9 @@ public class ExcelUtil {
 					Row row = iterator.next();
 					if (rowNumber == 0) {
 						Iterator<Cell> cells = row.iterator();
-						while (cells.hasNext()) {
-							Cell cell = cells.next();
-						}
+//						while (cells.hasNext()) {
+//							Cell cell = cells.next();
+//						}
 						rowNumber += 2;
 						continue;
 					}

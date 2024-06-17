@@ -50,7 +50,6 @@ public class ChipsServiceImpl implements ChipsService {
 
 	@Override
 	public Chips createChips(Chips chips) {
-
 		return this.chipsRepo.save(chips);
 	}
 
