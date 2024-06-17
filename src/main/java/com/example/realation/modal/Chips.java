@@ -1,6 +1,5 @@
 package com.example.realation.modal;
 
-import java.io.Serializable;
 import java.util.Date;
 
 import jakarta.persistence.Column;
@@ -8,7 +7,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
-import jakarta.validation.constraints.Past;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
@@ -17,14 +15,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Chips implements Serializable {
-	private static final long serialVersionUID = 1L;
+public class Chips {
 	@Id
 	private String chip;
 
 	private String pid;
 	private String name;
-	@Past
+//	@Past
 	@Temporal(TemporalType.DATE)
 	private Date birthdate;
 	private String gender;
@@ -116,6 +113,5 @@ public class Chips implements Serializable {
 	public void setSmsSent(boolean smsSent) {
 		this.smsSent = smsSent;
 	}
-	
 
 }

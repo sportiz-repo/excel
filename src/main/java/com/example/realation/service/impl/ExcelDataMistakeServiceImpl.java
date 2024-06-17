@@ -29,4 +29,9 @@ public class ExcelDataMistakeServiceImpl implements ExcelDataMistakeService {
 		return excelDataMistakeRepo.save(excelDataMistake);
 	}
 
+	@Override
+	public List<ExcelDataMistakes> saveAllExcelDataMistakes(List<ExcelDataMistakes> excelDataMistakesList) {
+		return excelDataMistakeRepo.saveAll(excelDataMistakesList);
+	}
+
 }

@@ -11,22 +11,21 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.realation.modal.Chips;
-import com.example.realation.service.ExcelDataMistakeService;
+import com.example.realation.modal.ExcelDataMistakes;
 
+@Component
 public class ExcelUtil {
-	private final ExcelDataMistakeService excelDataMistakeService;
 
-	@Autowired
-	public ExcelUtil(ExcelDataMistakeService excelDataMistakeService) {
-		super();
-		this.excelDataMistakeService = excelDataMistakeService;
-	}
+	List<Chips> chipsList = new ArrayList<>();
+	List<ExcelDataMistakes> excelDataMistakesList = new ArrayList<>();
 
-	public static boolean isExcelFormat(MultipartFile file) {
+	public boolean isExcelFormat(MultipartFile file) {
 		String fileType = file.getContentType();
 		System.out.println(fileType);
 		if (fileType.equals("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
@@ -34,8 +33,7 @@ public class ExcelUtil {
 		return false;
 	}
 
-	public static List<Chips> convertExcelToListOfProduct(InputStream is) {
-		List<Chips> list = new ArrayList<>();
+	public void convertExcelToListOfProduct(InputStream is) {
 		try (XSSFWorkbook workbook = new XSSFWorkbook(is)) {
 			System.out.println(workbook.getSheetName(0));
 			System.out.println(workbook.getNumberOfSheets());
@@ -56,21 +54,28 @@ public class ExcelUtil {
 					Iterator<Cell> cells = row.iterator();
 					int cid = 0;
 					Chips chips = new Chips();
+					ExcelDataMistakes excelDataMistakes = new ExcelDataMistakes();
+					boolean excelDataMistakesFlag = false;
 					while (cells.hasNext()) {
+
 						Cell cell = cells.next();
 
 						switch (cid) {
 						case 0:
 							if (cell.getCellType().toString().equals("STRING")) {
 								String chipNumber = cell.getStringCellValue().toString().trim();
-								if (Validate.idChipValide(chipNumber))
+								if (Validate.idChipValide(chipNumber)) {
 									chips.setChip(cell.getStringCellValue());
-								else {
+								} else {
 									System.out.println("Row " + rowNumber + " Column " + cid
 											+ " Is not a valid chip number " + chipNumber);
+									excelDataMistakesFlag = true;
+									excelDataMistakes.setChipNumber("incorrect" + chipNumber);
 								}
 							} else {
 								System.out.println("Row " + rowNumber + " Column " + cid + " Is not a string cell");
+								excelDataMistakesFlag = true;
+								excelDataMistakes.setChipNumber("incorrect");
 							}
 							break;
 						case 1:
@@ -78,6 +83,8 @@ public class ExcelUtil {
 								chips.setPid(cell.getStringCellValue().toString().trim());
 							} else {
 								System.out.println("Row " + rowNumber + " Column " + cid + " Is not a string cell");
+								excelDataMistakesFlag = true;
+								excelDataMistakes.setPid(cell.getStringCellValue().toString().trim());
 							}
 							break;
 						case 2:
@@ -88,9 +95,13 @@ public class ExcelUtil {
 								else {
 									System.out.println(
 											"Row " + rowNumber + " Column " + cid + " Is not a valid name " + name);
+									excelDataMistakesFlag = true;
+									excelDataMistakes.setName("incorrect" + name);
 								}
 							} else {
 								System.out.println("Row " + rowNumber + " Column " + cid + " Is not a string cell");
+								excelDataMistakesFlag = true;
+								excelDataMistakes.setName("incorrect");
 							}
 							break;
 						case 3:
@@ -103,9 +114,13 @@ public class ExcelUtil {
 								else {
 									System.out.println("Row " + rowNumber + " Column " + cid
 											+ " Is not a valid birthdate " + birthDate);
+									excelDataMistakesFlag = true;
+									excelDataMistakes.setBirthdate("incorrect");
 								}
 							} else {
 								System.out.println("Row " + rowNumber + " Column " + cid + " Is not a numeric cell");
+								excelDataMistakesFlag = true;
+								excelDataMistakes.setBirthdate("incorrect");
 							}
 							break;
 						case 4:
@@ -114,6 +129,8 @@ public class ExcelUtil {
 								chips.setGender(gender);
 							} else {
 								System.out.println("Row " + rowNumber + " Column " + cid + " Is not a string cell");
+								excelDataMistakesFlag = true;
+								excelDataMistakes.setGender("incorrect");
 							}
 							break;
 						case 5:
@@ -123,9 +140,13 @@ public class ExcelUtil {
 									chips.setCity(city);
 								else {
 									System.out.println("Row " + rowNumber + " Column " + cid + " Is not a valid city");
+									excelDataMistakesFlag = true;
+									excelDataMistakes.setCity("incorrect");
 								}
 							} else {
 								System.out.println("Row " + rowNumber + " Column " + cid + " Is not a string cell");
+								excelDataMistakesFlag = true;
+								excelDataMistakes.setCity("incorrect");
 							}
 							break;
 						case 6:
@@ -136,9 +157,13 @@ public class ExcelUtil {
 								else {
 									System.out.println(
 											"Row " + rowNumber + " Column " + cid + " Is not a valid email " + email);
+									excelDataMistakesFlag = true;
+									excelDataMistakes.setEmail("incorrect");
 								}
 							} else {
 								System.out.println("Row " + rowNumber + " Column " + cid + " Is not a string cell");
+								excelDataMistakesFlag = true;
+								excelDataMistakes.setEmail("incorrect");
 							}
 							break;
 						case 7:
@@ -149,9 +174,13 @@ public class ExcelUtil {
 								else {
 									System.out.println("Row " + rowNumber + " Column " + cid
 											+ " Is not a valid phone number " + phone);
+									excelDataMistakesFlag = true;
+									excelDataMistakes.setPhone("incorrect");
 								}
 							} else {
 								System.out.println("Row " + rowNumber + " Column " + cid + " Is not a numeric cell");
+								excelDataMistakesFlag = true;
+								excelDataMistakes.setPhone("incorrect");
 							}
 							break;
 						case 8:
@@ -160,6 +189,8 @@ public class ExcelUtil {
 								chips.setRace(race);
 							} else {
 								System.out.println("Row " + rowNumber + " Column " + cid + " Is not a string cell");
+								excelDataMistakesFlag = true;
+								excelDataMistakes.setRace("incorrect");
 							}
 							break;
 						default:
@@ -167,18 +198,28 @@ public class ExcelUtil {
 						}
 						cid++;
 					}
+					excelDataMistakes.setRowNumber(rowNumber);
+					if (excelDataMistakesFlag)
+						excelDataMistakesList.add(excelDataMistakes);
+					else
+						chipsList.add(chips);
 					rowNumber++;
 //					break;
 //					list.add(chips);
 				}
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return list;
+	}
+
+	public List<Chips> getChipsList() {
+		return chipsList;
+	}
+
+	public List<ExcelDataMistakes> getExcelDataMistakesList() {
+		return excelDataMistakesList;
 	}
 }

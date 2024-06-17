@@ -9,19 +9,25 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.realation.modal.Chips;
+import com.example.realation.modal.ExcelDataMistakes;
 import com.example.realation.repo.ChipsRepo;
 import com.example.realation.service.ChipsService;
+import com.example.realation.service.ExcelDataMistakeService;
 import com.example.realation.util.ExcelUtil;
 
 @Service
 
 public class ChipsServiceImpl implements ChipsService {
 	private final ChipsRepo chipsRepo;
+	private final ExcelUtil excelUtil;
+	private final ExcelDataMistakeService excelDataMistakeService;
 
 	@Autowired
-	public ChipsServiceImpl(ChipsRepo chipsRepo) {
+	public ChipsServiceImpl(ChipsRepo chipsRepo, ExcelUtil excelUtil, ExcelDataMistakeService excelDataMistakeService) {
 		super();
 		this.chipsRepo = chipsRepo;
+		this.excelUtil = excelUtil;
+		this.excelDataMistakeService = excelDataMistakeService;
 	}
 
 	@Override
@@ -56,9 +62,14 @@ public class ChipsServiceImpl implements ChipsService {
 	@Override
 	public List<Chips> saveAllFromExcel(MultipartFile file) {
 		List<Chips> chips = null;
+		List<ExcelDataMistakes> excelDataMistakesList = null;
 		try {
-			chips = ExcelUtil.convertExcelToListOfProduct(file.getInputStream());
+			excelUtil.convertExcelToListOfProduct(file.getInputStream());
+			chips = this.excelUtil.getChipsList();
+			excelDataMistakesList = this.excelUtil.getExcelDataMistakesList();
+			System.out.println(excelDataMistakesList);
 			chips = this.chipsRepo.saveAll(chips);
+			excelDataMistakesList = this.excelDataMistakeService.saveAllExcelDataMistakes(excelDataMistakesList);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

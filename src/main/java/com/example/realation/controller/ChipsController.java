@@ -1,6 +1,5 @@
 package com.example.realation.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,10 +21,12 @@ import com.example.realation.util.ExcelUtil;
 @RequestMapping("/chips")
 public class ChipsController {
 	private final ChipsService chipsService;
+	private final ExcelUtil excelUtil;
 
 	@Autowired
-	public ChipsController(ChipsService chipsService) {
+	public ChipsController(ChipsService chipsService, ExcelUtil excelUtil) {
 		this.chipsService = chipsService;
+		this.excelUtil = excelUtil;
 	}
 
 	@PostMapping("/create")
@@ -42,10 +43,10 @@ public class ChipsController {
 
 	@PostMapping("/upload")
 	public ResponseEntity<List<Chips>> upload(@RequestParam("file") MultipartFile file) {
-		if (ExcelUtil.isExcelFormat(file)) {
+		if (excelUtil.isExcelFormat(file)) {
 			List<Chips> chips = this.chipsService.saveAllFromExcel(file);
 			return ResponseEntity.status(HttpStatus.OK).body(chips);
 		}
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ArrayList());
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 	}
 }

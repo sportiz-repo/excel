@@ -8,4 +8,6 @@ public interface ExcelDataMistakeService {
 	public List<ExcelDataMistakes> getAllMistake();
 
 	public ExcelDataMistakes saveExcelDataMistake(ExcelDataMistakes excelDataMistake);
+
+	public List<ExcelDataMistakes> saveAllExcelDataMistakes(List<ExcelDataMistakes> excelDataMistakesList);
 }
