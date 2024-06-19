@@ -9,25 +9,27 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.realation.modal.Chips;
-import com.example.realation.modal.ExcelDataMistakes;
+import com.example.realation.modal.MistakesInExcel;
 import com.example.realation.repo.ChipsRepo;
 import com.example.realation.service.ChipsService;
-import com.example.realation.service.ExcelDataMistakeService;
+import com.example.realation.service.MistakesInExcelService;
 import com.example.realation.util.ExcelUtil;
+
+import jakarta.transaction.Transactional;
 
 @Service
 
 public class ChipsServiceImpl implements ChipsService {
 	private final ChipsRepo chipsRepo;
 	private final ExcelUtil excelUtil;
-	private final ExcelDataMistakeService excelDataMistakeService;
+	private final MistakesInExcelService mistakesInExcelService;
 
 	@Autowired
-	public ChipsServiceImpl(ChipsRepo chipsRepo, ExcelUtil excelUtil, ExcelDataMistakeService excelDataMistakeService) {
+	public ChipsServiceImpl(ChipsRepo chipsRepo, ExcelUtil excelUtil, MistakesInExcelService mistakesInExcelService) {
 		super();
 		this.chipsRepo = chipsRepo;
 		this.excelUtil = excelUtil;
-		this.excelDataMistakeService = excelDataMistakeService;
+		this.mistakesInExcelService = mistakesInExcelService;
 	}
 
 	@Override
@@ -60,16 +62,26 @@ public class ChipsServiceImpl implements ChipsService {
 	}
 
 	@Override
+	@Transactional
 	public List<Chips> saveAllFromExcel(MultipartFile file) {
 		List<Chips> chips = null;
-		List<ExcelDataMistakes> excelDataMistakesList = null;
+		List<MistakesInExcel> excelDataMistakesList = null;
 		try {
 			excelUtil.convertExcelToListOfProduct(file.getInputStream());
 			chips = this.excelUtil.getChipsList();
 			excelDataMistakesList = this.excelUtil.getExcelDataMistakesList();
-			System.out.println(excelDataMistakesList);
-			chips = this.chipsRepo.saveAll(chips);
-			excelDataMistakesList = this.excelDataMistakeService.saveAllExcelDataMistakes(excelDataMistakesList);
+			excelDataMistakesList = this.mistakesInExcelService.saveAllExcelDataMistakes(excelDataMistakesList);
+			try {
+				chips = this.chipsRepo.saveAll(chips);
+			} catch (Exception de) {
+				chips.forEach(chip -> {
+					try {
+						this.chipsRepo.save(chip);
+					} catch (Exception dex) {
+						dex.getMessage();
+					}
+				});
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

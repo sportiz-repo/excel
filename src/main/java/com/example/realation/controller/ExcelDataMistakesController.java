@@ -7,22 +7,22 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.realation.modal.ExcelDataMistakes;
-import com.example.realation.service.ExcelDataMistakeService;
+import com.example.realation.modal.MistakesInExcel;
+import com.example.realation.service.MistakesInExcelService;
 
 @RestController
 @RequestMapping("/mistake")
 public class ExcelDataMistakesController {
-	private final ExcelDataMistakeService excelDataMistakeService;
+	private final MistakesInExcelService excelDataMistakeService;
 
 	@Autowired
-	public ExcelDataMistakesController(ExcelDataMistakeService excelDataMistakeService) {
+	public ExcelDataMistakesController(MistakesInExcelService excelDataMistakeService) {
 		super();
 		this.excelDataMistakeService = excelDataMistakeService;
 	}
 
-	@GetMapping("all")
-	public List<ExcelDataMistakes> getAllExcelDataMistakes() {
+	@GetMapping("/all")
+	public List<MistakesInExcel> getAllExcelDataMistakes() {
 		return excelDataMistakeService.getAllMistake();
 	}
 }
