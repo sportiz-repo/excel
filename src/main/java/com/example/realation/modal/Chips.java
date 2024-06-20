@@ -1,5 +1,6 @@
 package com.example.realation.modal;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 import jakarta.persistence.Column;
@@ -23,7 +24,7 @@ public class Chips {
 	private String name;
 //	@Past
 	@Temporal(TemporalType.DATE)
-	private Date birthdate;
+	private LocalDate birthdate;
 	private String gender;
 	private String race;
 	private String city;
@@ -58,11 +59,11 @@ public class Chips {
 		this.name = name;
 	}
 
-	public Date getBirthdate() {
+	public LocalDate getBirthdate() {
 		return birthdate;
 	}
 
-	public void setBirthdate(Date birthdate) {
+	public void setBirthdate(LocalDate birthdate) {
 		this.birthdate = birthdate;
 	}
 

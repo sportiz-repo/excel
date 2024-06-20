@@ -10,4 +10,6 @@ public interface MistakesInExcelService {
 	public MistakesInExcel saveExcelDataMistake(MistakesInExcel mistakesInExcel);
 
 	public List<MistakesInExcel> saveAllExcelDataMistakes(List<MistakesInExcel> mistakesInExcelsList);
+
+	public void deleteAll();
 }

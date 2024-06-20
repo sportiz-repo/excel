@@ -11,15 +11,15 @@ import lombok.NoArgsConstructor;
 public class MistakesInExcel {
 	@Id
 	private int rowOrChipNumber;
-	private String chipNumber = "correct";
-	private String pid = "correct";
-	private String name = "correct";
-	private String birthdate = "correct";
-	private String gender = "correct";
-	private String city = "correct";
-	private String email = "correct";
-	private String phone = "correct";
-	private String race = "correct";
+	private String chipNumber = "";
+	private String pid = "";
+	private String name = "";
+	private String birthdate = "";
+	private String gender = "";
+	private String city = "";
+	private String email = "";
+	private String phone = "";
+	private String race = "";
 
 	public int getRowOrChipNumber() {
 		return rowOrChipNumber;

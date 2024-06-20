@@ -34,4 +34,9 @@ public class MistakesInExcelImpl implements MistakesInExcelService {
 		return mistakesInExcelRepo.saveAll(mistakesInExcelsList);
 	}
 
+	@Override
+	public void deleteAll() {
+		mistakesInExcelRepo.deleteAll();
+	}
+
 }

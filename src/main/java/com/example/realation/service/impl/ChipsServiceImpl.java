@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -70,6 +73,7 @@ public class ChipsServiceImpl implements ChipsService {
 			excelUtil.convertExcelToListOfProduct(file.getInputStream());
 			chips = this.excelUtil.getChipsList();
 			excelDataMistakesList = this.excelUtil.getExcelDataMistakesList();
+			this.mistakesInExcelService.deleteAll();
 			excelDataMistakesList = this.mistakesInExcelService.saveAllExcelDataMistakes(excelDataMistakesList);
 			try {
 				chips = this.chipsRepo.saveAll(chips);
@@ -86,6 +90,27 @@ public class ChipsServiceImpl implements ChipsService {
 			e.printStackTrace();
 		}
 		return chips;
+	}
+
+	@Override
+	public Page<Chips> getChipsByPagination(int pageNo, int pageSize) {
+		Pageable pageable = PageRequest.of(pageNo, pageSize);
+		return this.chipsRepo.findAll(pageable);
+	}
+
+	@Override
+	public long totalChips() {
+		return this.chipsRepo.count();
+	}
+
+	@Override
+	public List<Chips> getChipsByGender(String gender) {
+		return this.chipsRepo.getByGender(gender);
+	}
+
+	@Override
+	public List<Chips> getChipsByName(String name) {
+		return this.chipsRepo.getByName(name);
 	}
 
 }

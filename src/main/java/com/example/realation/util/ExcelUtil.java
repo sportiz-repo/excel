@@ -1,9 +1,9 @@
 package com.example.realation.util;
 
 import java.io.InputStream;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -105,7 +105,7 @@ public class ExcelUtil {
 								LocalDateTime birthDate = cell.getLocalDateTimeCellValue();
 								if (Validate.isBirthdateValid(birthDate.getYear(), birthDate.getMonthValue(),
 										birthDate.getDayOfMonth()))
-									chips.setBirthdate(new Date(birthDate.getYear(), birthDate.getMonthValue(),
+									chips.setBirthdate(LocalDate.of(birthDate.getYear(), birthDate.getMonthValue(),
 											birthDate.getDayOfMonth()));
 								else {
 									System.out.println("Row " + rowNumber + " Column " + cid
