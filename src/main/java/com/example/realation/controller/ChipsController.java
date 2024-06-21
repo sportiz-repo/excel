@@ -12,22 +12,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.example.realation.modal.Chips;
 import com.example.realation.service.ChipsService;
-import com.example.realation.util.ExcelUtil;
 
 @RestController
 @RequestMapping("/chips")
 public class ChipsController {
 	private final ChipsService chipsService;
-	private final ExcelUtil excelUtil;
 
 	@Autowired
-	public ChipsController(ChipsService chipsService, ExcelUtil excelUtil) {
+	public ChipsController(ChipsService chipsService) {
 		this.chipsService = chipsService;
-		this.excelUtil = excelUtil;
 	}
 
 	@PostMapping("/create")
@@ -56,18 +52,10 @@ public class ChipsController {
 	public List<Chips> getChipsByGender(@RequestParam String gender) {
 		return this.chipsService.getChipsByGender(gender);
 	}
+
 	@GetMapping("/byname")
 	public List<Chips> getChipsByName(@RequestParam String name) {
 		return this.chipsService.getChipsByName(name);
-	}
-
-	@PostMapping("/upload")
-	public ResponseEntity<List<Chips>> upload(@RequestParam("file") MultipartFile file) {
-		if (excelUtil.isExcelFormat(file)) {
-			List<Chips> chips = this.chipsService.saveAllFromExcel(file);
-			return ResponseEntity.status(HttpStatus.OK).body(chips);
-		}
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 	}
 
 }

@@ -1,6 +1,5 @@
 package com.example.realation.service.impl;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,30 +8,20 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.example.realation.modal.Chips;
-import com.example.realation.modal.MistakesInExcel;
 import com.example.realation.repo.ChipsRepo;
 import com.example.realation.service.ChipsService;
-import com.example.realation.service.MistakesInExcelService;
-import com.example.realation.util.ExcelUtil;
-
-import jakarta.transaction.Transactional;
 
 @Service
 
 public class ChipsServiceImpl implements ChipsService {
 	private final ChipsRepo chipsRepo;
-	private final ExcelUtil excelUtil;
-	private final MistakesInExcelService mistakesInExcelService;
 
 	@Autowired
-	public ChipsServiceImpl(ChipsRepo chipsRepo, ExcelUtil excelUtil, MistakesInExcelService mistakesInExcelService) {
+	public ChipsServiceImpl(ChipsRepo chipsRepo) {
 		super();
 		this.chipsRepo = chipsRepo;
-		this.excelUtil = excelUtil;
-		this.mistakesInExcelService = mistakesInExcelService;
 	}
 
 	@Override
@@ -62,34 +51,6 @@ public class ChipsServiceImpl implements ChipsService {
 	@Override
 	public Chips createChips(Chips chips) {
 		return this.chipsRepo.save(chips);
-	}
-
-	@Override
-	@Transactional
-	public List<Chips> saveAllFromExcel(MultipartFile file) {
-		List<Chips> chips = null;
-		List<MistakesInExcel> excelDataMistakesList = null;
-		try {
-			excelUtil.convertExcelToListOfProduct(file.getInputStream());
-			chips = this.excelUtil.getChipsList();
-			excelDataMistakesList = this.excelUtil.getExcelDataMistakesList();
-			this.mistakesInExcelService.deleteAll();
-			excelDataMistakesList = this.mistakesInExcelService.saveAllExcelDataMistakes(excelDataMistakesList);
-			try {
-				chips = this.chipsRepo.saveAll(chips);
-			} catch (Exception de) {
-				chips.forEach(chip -> {
-					try {
-						this.chipsRepo.save(chip);
-					} catch (Exception dex) {
-						dex.getMessage();
-					}
-				});
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return chips;
 	}
 
 	@Override

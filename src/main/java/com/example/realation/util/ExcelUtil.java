@@ -14,13 +14,13 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.example.realation.modal.Chips;
 import com.example.realation.modal.MistakesInExcel;
+import com.example.realation.modal.Participant;
 
 @Component
 public class ExcelUtil {
 
-	List<Chips> chipsList = new ArrayList<>();
+	List<Participant> participantList = new ArrayList<>();
 	List<MistakesInExcel> mistakesInExcelList = new ArrayList<>();
 
 	public boolean isExcelFormat(MultipartFile file) {
@@ -42,14 +42,13 @@ public class ExcelUtil {
 				while (iterator.hasNext()) {
 					Row row = iterator.next();
 					if (rowNumber == 0) {
-						Iterator<Cell> cells = row.iterator();
 
 						rowNumber += 2;
 						continue;
 					}
 					Iterator<Cell> cells = row.iterator();
 					int cid = 0;
-					Chips chips = new Chips();
+					Participant participant = new Participant();
 					MistakesInExcel mistakesInExcel = new MistakesInExcel();
 					boolean excelDataMistakesFlag = false;
 					while (cells.hasNext()) {
@@ -61,7 +60,7 @@ public class ExcelUtil {
 							if (cell.getCellType().toString().equals("STRING")) {
 								String chipNumber = cell.getStringCellValue().toString().trim();
 								if (Validate.idChipValide(chipNumber)) {
-									chips.setChip(cell.getStringCellValue());
+									participant.setChip(cell.getStringCellValue());
 								} else {
 									System.out.println("Row " + rowNumber + " Column " + cid
 											+ " Is not a valid chip number " + chipNumber);
@@ -76,7 +75,7 @@ public class ExcelUtil {
 							break;
 						case 1:
 							if (cell.getCellType().toString().equals("STRING")) {
-								chips.setPid(cell.getStringCellValue().toString().trim());
+								participant.setPid(cell.getStringCellValue().toString().trim());
 							} else {
 								System.out.println("Row " + rowNumber + " Column " + cid + " Is not a string cell");
 								excelDataMistakesFlag = true;
@@ -87,7 +86,7 @@ public class ExcelUtil {
 							if (cell.getCellType().toString().equals("STRING")) {
 								String name = cell.getStringCellValue().toString().trim();
 								if (Validate.validateName(name))
-									chips.setName(name);
+									participant.setName(name);
 								else {
 									System.out.println(
 											"Row " + rowNumber + " Column " + cid + " Is not a valid name " + name);
@@ -105,8 +104,8 @@ public class ExcelUtil {
 								LocalDateTime birthDate = cell.getLocalDateTimeCellValue();
 								if (Validate.isBirthdateValid(birthDate.getYear(), birthDate.getMonthValue(),
 										birthDate.getDayOfMonth()))
-									chips.setBirthdate(LocalDate.of(birthDate.getYear(), birthDate.getMonthValue(),
-											birthDate.getDayOfMonth()));
+									participant.setBirthdate(LocalDate.of(birthDate.getYear(),
+											birthDate.getMonthValue(), birthDate.getDayOfMonth()));
 								else {
 									System.out.println("Row " + rowNumber + " Column " + cid
 											+ " Is not a valid birthdate " + birthDate);
@@ -122,7 +121,7 @@ public class ExcelUtil {
 						case 4:
 							if (cell.getCellType().toString().equals("STRING")) {
 								String gender = Validate.validateGender(cell.getStringCellValue().toString().trim());
-								chips.setGender(gender);
+								participant.setGender(gender);
 							} else {
 								System.out.println("Row " + rowNumber + " Column " + cid + " Is not a string cell");
 								excelDataMistakesFlag = true;
@@ -133,7 +132,7 @@ public class ExcelUtil {
 							if (cell.getCellType().toString().equals("STRING")) {
 								String city = cell.getStringCellValue().toString().trim();
 								if (Validate.validateCityFormat(city))
-									chips.setCity(city);
+									participant.setCity(city);
 								else {
 									System.out.println("Row " + rowNumber + " Column " + cid + " Is not a valid city");
 									excelDataMistakesFlag = true;
@@ -149,7 +148,7 @@ public class ExcelUtil {
 							if (cell.getCellType().toString().equals("STRING")) {
 								String email = cell.getStringCellValue().toString().trim();
 								if (Validate.isEmailValid(email))
-									chips.setEmail(email);
+									participant.setEmail(email);
 								else {
 									System.out.println(
 											"Row " + rowNumber + " Column " + cid + " Is not a valid email " + email);
@@ -166,7 +165,7 @@ public class ExcelUtil {
 							if (cell.getCellType().toString().equals("NUMERIC")) {
 								String phone = String.valueOf((long) cell.getNumericCellValue());
 								if (Validate.isValidIndianMobileNumber(phone))
-									chips.setPhone(phone);
+									participant.setPhone(phone);
 								else {
 									System.out.println("Row " + rowNumber + " Column " + cid
 											+ " Is not a valid phone number " + phone);
@@ -182,7 +181,7 @@ public class ExcelUtil {
 						case 8:
 							if (cell.getCellType().toString().equals("STRING")) {
 								String race = cell.getStringCellValue().toString().trim();
-								chips.setRace(race);
+								participant.setRace(race);
 							} else {
 								System.out.println("Row " + rowNumber + " Column " + cid + " Is not a string cell");
 								excelDataMistakesFlag = true;
@@ -199,7 +198,7 @@ public class ExcelUtil {
 					if (excelDataMistakesFlag)
 						mistakesInExcelList.add(mistakesInExcel);
 					else
-						chipsList.add(chips);
+						participantList.add(participant);
 					rowNumber++;
 				}
 			} catch (Exception e) {
@@ -210,8 +209,8 @@ public class ExcelUtil {
 		}
 	}
 
-	public List<Chips> getChipsList() {
-		return chipsList;
+	public List<Participant> getParticipantList() {
+		return participantList;
 	}
 
 	public List<MistakesInExcel> getExcelDataMistakesList() {

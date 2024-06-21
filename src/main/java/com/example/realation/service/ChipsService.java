@@ -3,7 +3,6 @@ package com.example.realation.service;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.example.realation.modal.Chips;
 
@@ -15,8 +14,6 @@ public interface ChipsService {
 	public Chips getChipByPid(String pid);
 
 	public List<Chips> getAllChips();
-
-	public List<Chips> saveAllFromExcel(MultipartFile file);
 
 	public Page<Chips> getChipsByPagination(int pageNo, int pageSize);
 

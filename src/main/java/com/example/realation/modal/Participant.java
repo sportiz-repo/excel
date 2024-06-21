@@ -2,7 +2,10 @@ package com.example.realation.modal;
 
 import java.time.LocalDate;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
@@ -14,18 +17,41 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Chips {
+public class Participant {
 	@Id
-	private String chip;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private long id;
 
+	@Column(nullable = false, unique = true)
+	private String chip;
+	@Column(nullable = false, unique = true)
 	private String pid;
+	@Column(nullable = false)
 	private String name;
+	@Column(nullable = false)
 	@Temporal(TemporalType.DATE)
 	private LocalDate birthdate;
+	@Column(nullable = false)
 	private String gender;
+	@Column(nullable = false)
 	private String race;
 	private String city;
-	private int age;
+	@Column(nullable = false, unique = true)
+	private String phone;
+	@Column(nullable = false, unique = true)
+	private String email;
+	@Column(nullable = false)
+	private String tshirtSize = "s";
+	@Column(columnDefinition = "boolean default true")
+	private boolean smsSent;
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
 
 	public String getChip() {
 		return chip;
@@ -83,14 +109,36 @@ public class Chips {
 		this.city = city;
 	}
 
-	public int getAge() {
-		return age;
+	public String getPhone() {
+		return phone;
 	}
 
-	public void setAge(int age) {
-		this.age = age;
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
 
-	
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getTshirtSize() {
+		return tshirtSize;
+	}
+
+	public void setTshirtSize(String tshirtSize) {
+		this.tshirtSize = tshirtSize;
+	}
+
+	public boolean isSmsSent() {
+		return smsSent;
+	}
+
+	public void setSmsSent(boolean smsSent) {
+		this.smsSent = smsSent;
+	}
 
 }

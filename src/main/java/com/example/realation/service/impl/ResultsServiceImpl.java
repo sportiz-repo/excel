@@ -8,19 +8,16 @@ import org.springframework.stereotype.Service;
 
 import com.example.realation.modal.Results;
 import com.example.realation.repo.ResultsRepo;
-import com.example.realation.service.ChipsService;
 import com.example.realation.service.ResultsService;
 
 @Service
 public class ResultsServiceImpl implements ResultsService {
 	private final ResultsRepo resultsRepo;
-	private final ChipsService chipsService;
 
 	@Autowired
-	public ResultsServiceImpl(ResultsRepo resultsRepo, ChipsService chipsService) {
+	public ResultsServiceImpl(ResultsRepo resultsRepo) {
 		super();
 		this.resultsRepo = resultsRepo;
-		this.chipsService = chipsService;
 	}
 
 	@Override
