@@ -64,7 +64,7 @@ public class ParticipantServiceImpl implements ParticipantService {
 
 	@Override
 //	@Transactional
-	public List<Participant> saveAllFromExcel(MultipartFile file) {
+	public String saveAllFromExcel(MultipartFile file) {
 		List<Participant> participant = null;
 		List<MistakesInExcel> excelDataMistakesList = null;
 		try {
@@ -87,7 +87,7 @@ public class ParticipantServiceImpl implements ParticipantService {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return participant;
+		return "Done";
 	}
 
 	@Override

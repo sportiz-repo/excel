@@ -16,7 +16,7 @@ public interface ParticipantService {
 
 	public List<Participant> getAllParticipant();
 
-	public List<Participant> saveAllFromExcel(MultipartFile file);
+	public String saveAllFromExcel(MultipartFile file);
 
 	public Page<Participant> getParticipantByPagination(int pageNo, int pageSize);
 
