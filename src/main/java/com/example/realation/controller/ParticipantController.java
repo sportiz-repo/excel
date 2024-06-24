@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,6 +30,7 @@ public class ParticipantController {
 		super();
 		this.participantService = participantService;
 		this.excelUtil = excelUtil;
+		System.out.println(excelUtil);
 	}
 
 	@PostMapping("/create")
@@ -74,6 +76,12 @@ public class ParticipantController {
 			return ResponseEntity.status(HttpStatus.OK).body(participants);
 		}
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+	}
+	
+	@PostMapping("/test")
+	public String test() {
+		System.out.println("hi");
+		return "test";
 	}
 
 }

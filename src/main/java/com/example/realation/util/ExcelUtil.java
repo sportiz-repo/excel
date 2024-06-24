@@ -11,6 +11,7 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,6 +19,7 @@ import com.example.realation.modal.MistakesInExcel;
 import com.example.realation.modal.Participant;
 
 @Component
+@Scope("prototype")
 public class ExcelUtil {
 
 	List<Participant> participantList = new ArrayList<>();
