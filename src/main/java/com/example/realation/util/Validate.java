@@ -1,10 +1,17 @@
 package com.example.realation.util;
 
 import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Validate {
+
+	private static final Set<String> VALID_SIZES = new HashSet<>(
+			Arrays.asList("XXS", "XS", "S", "M", "L", "XL", "XXL", "XXXL"));
+
 	public static boolean validateName(String name) {
 		if (name == null || name.isBlank()) {
 			return false;
@@ -146,5 +153,23 @@ public class Validate {
 		Pattern compiledPattern = Pattern.compile(pattern);
 		Matcher matcher = compiledPattern.matcher(mobileNumber);
 		return matcher.matches();
+	}
+
+	public static String validateSize(String input) {
+		// Check if input is null or empty
+		if (input == null || input.trim().isEmpty()) {
+			return "M";
+		}
+
+		// Convert input to uppercase
+		String size = input.trim().toUpperCase();
+
+		// Check if the size is valid
+		if (VALID_SIZES.contains(size)) {
+			return size;
+		}
+
+		// Return default size "M" if the input is not valid
+		return "M";
 	}
 }
