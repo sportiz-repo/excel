@@ -7,40 +7,40 @@ import org.junit.jupiter.api.Test;
 public class TshirtValidationTest {
 	@Test
 	public void testValidSizes() {
-		assertEquals("XXS", Validate.validateSize("xxs"));
-		assertEquals("XS", Validate.validateSize("XS"));
-		assertEquals("S", Validate.validateSize("s"));
-		assertEquals("M", Validate.validateSize("M"));
-		assertEquals("L", Validate.validateSize("l"));
-		assertEquals("XL", Validate.validateSize("XL"));
-		assertEquals("XXL", Validate.validateSize("xxl"));
-		assertEquals("XXXL", Validate.validateSize("XXXl"));
+		assertEquals("XXS", Validate.validateTshirtSize("xxs"));
+		assertEquals("XS", Validate.validateTshirtSize("XS"));
+		assertEquals("S", Validate.validateTshirtSize("s"));
+		assertEquals("M", Validate.validateTshirtSize("M"));
+		assertEquals("L", Validate.validateTshirtSize("l"));
+		assertEquals("XL", Validate.validateTshirtSize("XL"));
+		assertEquals("XXL", Validate.validateTshirtSize("xxl"));
+		assertEquals("XXXL", Validate.validateTshirtSize("XXXl"));
 	}
 
 	@Test
 	public void testInvalidSizes() {
-		assertEquals("M", Validate.validateSize("abcd"));
-		assertEquals("M", Validate.validateSize("small"));
-		assertEquals("M", Validate.validateSize("large"));
-		assertEquals("M", Validate.validateSize("extra large"));
+		assertEquals("M", Validate.validateTshirtSize("abcd"));
+		assertEquals("M", Validate.validateTshirtSize("small"));
+		assertEquals("M", Validate.validateTshirtSize("large"));
+		assertEquals("M", Validate.validateTshirtSize("extra large"));
 	}
 
 	@Test
 	public void testNullAndEmptyInput() {
-		assertEquals("M", Validate.validateSize(null));
-		assertEquals("M", Validate.validateSize(""));
-		assertEquals("M", Validate.validateSize(" "));
+		assertEquals("M", Validate.validateTshirtSize(null));
+		assertEquals("M", Validate.validateTshirtSize(""));
+		assertEquals("M", Validate.validateTshirtSize(" "));
 	}
 
 	@Test
 	public void testCaseInsensitiveInput() {
-		assertEquals("XXS", Validate.validateSize("xXs"));
-		assertEquals("XXS", Validate.validateSize("XxS"));
-		assertEquals("S", Validate.validateSize("S"));
-		assertEquals("M", Validate.validateSize("m"));
-		assertEquals("L", Validate.validateSize("l"));
-		assertEquals("XL", Validate.validateSize("xL"));
-		assertEquals("XXL", Validate.validateSize("XXl"));
-		assertEquals("XXXL", Validate.validateSize("xxXl"));
+		assertEquals("XXS", Validate.validateTshirtSize("xXs"));
+		assertEquals("XXS", Validate.validateTshirtSize("XxS"));
+		assertEquals("S", Validate.validateTshirtSize("S"));
+		assertEquals("M", Validate.validateTshirtSize("m"));
+		assertEquals("L", Validate.validateTshirtSize("l"));
+		assertEquals("XL", Validate.validateTshirtSize("xL"));
+		assertEquals("XXL", Validate.validateTshirtSize("XXl"));
+		assertEquals("XXXL", Validate.validateTshirtSize("xxXl"));
 	}
 }

@@ -155,7 +155,7 @@ public class Validate {
 		return matcher.matches();
 	}
 
-	public static String validateSize(String input) {
+	public static String validateTshirtSize(String input) {
 		// Check if input is null or empty
 		if (input == null || input.trim().isEmpty()) {
 			return "M";
