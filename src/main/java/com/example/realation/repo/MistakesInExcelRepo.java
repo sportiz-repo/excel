@@ -4,6 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.example.realation.modal.MistakesInExcel;
 
-public interface MistakesInExcelRepo extends JpaRepository<MistakesInExcel, Integer> {
+public interface MistakesInExcelRepo extends JpaRepository<MistakesInExcel, Long> {
 
 }

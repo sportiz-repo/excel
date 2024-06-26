@@ -73,7 +73,7 @@ public class ParticipantController {
 	public ResponseEntity<String> upload(@RequestParam("file") MultipartFile file) {
 		if (excelUtil.isExcelFormat(file)) {
 			String participants = this.participantService.saveAllFromExcel(file);
-			return ResponseEntity.status(HttpStatus.OK).body(participants);
+			return ResponseEntity.status(HttpStatus.OK).body("{\"success\": true}");
 		}
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 	}

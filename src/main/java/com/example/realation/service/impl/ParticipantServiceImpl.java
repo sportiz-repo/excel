@@ -3,6 +3,8 @@ package com.example.realation.service.impl;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -13,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.example.realation.modal.MistakesInExcel;
 import com.example.realation.modal.Participant;
+import com.example.realation.repo.MistakesInExcelRepo;
 import com.example.realation.repo.ParticipantRepo;
 import com.example.realation.service.MistakesInExcelService;
 import com.example.realation.service.ParticipantService;
@@ -23,14 +26,16 @@ public class ParticipantServiceImpl implements ParticipantService {
 	private final ParticipantRepo participantRepo;
 	private final ExcelUtil excelUtil;
 	private final MistakesInExcelService mistakesInExcelService;
+	private final MistakesInExcelRepo mistakesInExcelRepo;
 
 	@Autowired
 	public ParticipantServiceImpl(ParticipantRepo participantRepo, ExcelUtil excelUtil,
-			MistakesInExcelService mistakesInExcelService) {
+			MistakesInExcelService mistakesInExcelService, MistakesInExcelRepo mistakesInExcelRepo) {
 		super();
 		this.participantRepo = participantRepo;
 		this.excelUtil = excelUtil;
 		this.mistakesInExcelService = mistakesInExcelService;
+		this.mistakesInExcelRepo = mistakesInExcelRepo;
 	}
 
 	@Override
@@ -71,19 +76,21 @@ public class ParticipantServiceImpl implements ParticipantService {
 			excelUtil.convertExcelToListOfProduct(file.getInputStream());
 			participant = this.excelUtil.getParticipantList();
 			excelDataMistakesList = this.excelUtil.getExcelDataMistakesList();
-			this.mistakesInExcelService.deleteAll();
+			this.participantRepo.deleteAll();
+			this.mistakesInExcelRepo.deleteAll();
 			excelDataMistakesList = this.mistakesInExcelService.saveAllExcelDataMistakes(excelDataMistakesList);
-			try {
-				participant = this.participantRepo.saveAll(participant);
-			} catch (Exception de) {
-				participant.forEach(chip -> {
-					try {
-						this.participantRepo.save(chip);
-					} catch (Exception dex) {
-						dex.getMessage();
-					}
-				});
-			}
+
+			participant.forEach(chip -> {
+				try {
+					this.participantRepo.save(chip);
+				} catch (Exception dex) {
+					System.out.println(dex.getMessage());;
+					MistakesInExcel mistakesInExcel = new MistakesInExcel();
+					mistakesInExcel.setDuplicate(extractDuplicateEntry(dex.getMessage()));
+					mistakesInExcelService.saveExcelDataMistake(mistakesInExcel);
+				}
+			});
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -114,7 +121,21 @@ public class ParticipantServiceImpl implements ParticipantService {
 	@Override
 	public long getCountByGender(String gender) {
 		return this.participantRepo.getCountByGender(gender);
-//		return 0;
 	}
+	
+	public static String extractDuplicateEntry(String exceptionMessage) {
+        // Define the regular expression pattern
+        Pattern pattern = Pattern.compile("Duplicate entry '.*?'");
+
+        // Create a matcher for the input string
+        Matcher matcher = pattern.matcher(exceptionMessage);
+
+        // Find and return the matching substring
+        if (matcher.find()) {
+            return matcher.group(0);
+        } else {
+            return "No duplicate entry found";
+        }
+    }
 
 }
