@@ -182,6 +182,14 @@ public class ExcelUtil {
 							break;
 						case 8:
 							if (cell.getCellType().toString().equals("STRING")) {
+								String tshirtSize = cell.getStringCellValue().toString().trim();
+								tshirtSize = Validate.validateTshirtSize(tshirtSize);
+								participant.setTshirtSize(tshirtSize);
+							} else {
+								System.out.println("Row " + rowNumber + " Column " + cid + " Is not a string cell");
+							}
+						case 9:
+							if (cell.getCellType().toString().equals("STRING")) {
 								String race = cell.getStringCellValue().toString().trim();
 								participant.setRace(race);
 							} else {
