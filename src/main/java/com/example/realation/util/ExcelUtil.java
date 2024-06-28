@@ -34,6 +34,8 @@ public class ExcelUtil {
 	}
 
 	public void convertExcelToListOfProduct(InputStream is) {
+		participantList.clear();
+		mistakesInExcelList.clear();
 		try (XSSFWorkbook workbook = new XSSFWorkbook(is)) {
 			System.out.println(workbook.getSheetName(0));
 			System.out.println(workbook.getNumberOfSheets());
@@ -206,7 +208,6 @@ public class ExcelUtil {
 						cid++;
 					}
 					mistakesInExcel.setRowOrChipNumber(rowNumber);
-					;
 					if (excelDataMistakesFlag)
 						mistakesInExcelList.add(mistakesInExcel);
 					else

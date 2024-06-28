@@ -15,27 +15,26 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.example.realation.modal.MistakesInExcel;
 import com.example.realation.modal.Participant;
-import com.example.realation.repo.MistakesInExcelRepo;
 import com.example.realation.repo.ParticipantRepo;
 import com.example.realation.service.MistakesInExcelService;
 import com.example.realation.service.ParticipantService;
 import com.example.realation.util.ExcelUtil;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class ParticipantServiceImpl implements ParticipantService {
 	private final ParticipantRepo participantRepo;
 	private final ExcelUtil excelUtil;
 	private final MistakesInExcelService mistakesInExcelService;
-	private final MistakesInExcelRepo mistakesInExcelRepo;
 
 	@Autowired
 	public ParticipantServiceImpl(ParticipantRepo participantRepo, ExcelUtil excelUtil,
-			MistakesInExcelService mistakesInExcelService, MistakesInExcelRepo mistakesInExcelRepo) {
+			MistakesInExcelService mistakesInExcelService) {
 		super();
 		this.participantRepo = participantRepo;
 		this.excelUtil = excelUtil;
 		this.mistakesInExcelService = mistakesInExcelService;
-		this.mistakesInExcelRepo = mistakesInExcelRepo;
 	}
 
 	@Override
@@ -70,26 +69,32 @@ public class ParticipantServiceImpl implements ParticipantService {
 	@Override
 //	@Transactional
 	public String saveAllFromExcel(MultipartFile file) {
-		List<Participant> participant = null;
+		List<Participant> participants = null;
 		List<MistakesInExcel> excelDataMistakesList = null;
 		try {
 			excelUtil.convertExcelToListOfProduct(file.getInputStream());
-			participant = this.excelUtil.getParticipantList();
+			participants = this.excelUtil.getParticipantList();
 			excelDataMistakesList = this.excelUtil.getExcelDataMistakesList();
-			this.participantRepo.deleteAll();
-			this.mistakesInExcelRepo.deleteAll();
-			excelDataMistakesList = this.mistakesInExcelService.saveAllExcelDataMistakes(excelDataMistakesList);
+			synchronized (this) {
+				// Delete all existing records
+				this.participantRepo.deleteAllInBatch();
+				this.mistakesInExcelService.deleteAll();
 
-			participant.forEach(chip -> {
-				try {
-					this.participantRepo.save(chip);
-				} catch (Exception dex) {
-					System.out.println(dex.getMessage());;
-					MistakesInExcel mistakesInExcel = new MistakesInExcel();
-					mistakesInExcel.setDuplicate(extractDuplicateEntry(dex.getMessage()));
-					mistakesInExcelService.saveExcelDataMistake(mistakesInExcel);
+				// Save mistakes in Excel data
+				excelDataMistakesList = this.mistakesInExcelService.saveAllExcelDataMistakes(excelDataMistakesList);
+
+				// Save participants, handling duplicates
+				for (Participant participant : participants) {
+					try {
+						this.participantRepo.save(participant);
+					} catch (Exception dex) {
+						System.out.println(dex.getMessage());
+						MistakesInExcel mistakesInExcel = new MistakesInExcel();
+						mistakesInExcel.setDuplicate(extractDuplicateEntry(dex.getMessage()));
+						mistakesInExcelService.saveExcelDataMistake(mistakesInExcel);
+					}
 				}
-			});
+			}
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -122,20 +127,20 @@ public class ParticipantServiceImpl implements ParticipantService {
 	public long getCountByGender(String gender) {
 		return this.participantRepo.getCountByGender(gender);
 	}
-	
+
 	public static String extractDuplicateEntry(String exceptionMessage) {
-        // Define the regular expression pattern
-        Pattern pattern = Pattern.compile("Duplicate entry '.*?'");
+		// Define the regular expression pattern
+		Pattern pattern = Pattern.compile("Duplicate entry '.*?'");
 
-        // Create a matcher for the input string
-        Matcher matcher = pattern.matcher(exceptionMessage);
+		// Create a matcher for the input string
+		Matcher matcher = pattern.matcher(exceptionMessage);
 
-        // Find and return the matching substring
-        if (matcher.find()) {
-            return matcher.group(0);
-        } else {
-            return "No duplicate entry found";
-        }
-    }
+		// Find and return the matching substring
+		if (matcher.find()) {
+			return matcher.group(0);
+		} else {
+			return "No duplicate entry found";
+		}
+	}
 
 }

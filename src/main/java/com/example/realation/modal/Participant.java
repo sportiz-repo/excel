@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class Participant {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 
 	@Column(nullable = false, unique = true)

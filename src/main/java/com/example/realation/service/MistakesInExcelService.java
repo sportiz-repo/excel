@@ -12,4 +12,6 @@ public interface MistakesInExcelService {
 	public List<MistakesInExcel> saveAllExcelDataMistakes(List<MistakesInExcel> mistakesInExcelsList);
 
 	public void deleteAll();
+
+	public long count();
 }
