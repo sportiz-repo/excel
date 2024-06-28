@@ -20,8 +20,6 @@ import com.example.realation.service.MistakesInExcelService;
 import com.example.realation.service.ParticipantService;
 import com.example.realation.util.ExcelUtil;
 
-import jakarta.transaction.Transactional;
-
 @Service
 public class ParticipantServiceImpl implements ParticipantService {
 	private final ParticipantRepo participantRepo;
