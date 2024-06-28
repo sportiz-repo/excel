@@ -1,6 +1,8 @@
 package com.example.realation.modal;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -10,7 +12,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class MistakesInExcel {
 	@Id
-	private int rowOrChipNumber;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	private int rowOrChipNumber = -1;
 	private String chipNumber = "";
 	private String pid = "";
 	private String name = "";
@@ -20,6 +24,15 @@ public class MistakesInExcel {
 	private String email = "";
 	private String phone = "";
 	private String race = "";
+	private String duplicate = "";
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
 
 	public int getRowOrChipNumber() {
 		return rowOrChipNumber;
@@ -99,6 +112,14 @@ public class MistakesInExcel {
 
 	public void setRace(String race) {
 		this.race = race;
+	}
+
+	public String getDuplicate() {
+		return duplicate;
+	}
+
+	public void setDuplicate(String duplicate) {
+		this.duplicate = duplicate;
 	}
 
 }

@@ -3,6 +3,8 @@ package com.example.realation.service.impl;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -65,25 +67,33 @@ public class ParticipantServiceImpl implements ParticipantService {
 	@Override
 //	@Transactional
 	public String saveAllFromExcel(MultipartFile file) {
-		List<Participant> participant = null;
+		List<Participant> participants = null;
 		List<MistakesInExcel> excelDataMistakesList = null;
 		try {
 			excelUtil.convertExcelToListOfProduct(file.getInputStream());
-			participant = this.excelUtil.getParticipantList();
+			participants = this.excelUtil.getParticipantList();
 			excelDataMistakesList = this.excelUtil.getExcelDataMistakesList();
-			this.mistakesInExcelService.deleteAll();
-			excelDataMistakesList = this.mistakesInExcelService.saveAllExcelDataMistakes(excelDataMistakesList);
-			try {
-				participant = this.participantRepo.saveAll(participant);
-			} catch (Exception de) {
-				participant.forEach(chip -> {
+			synchronized (this) {
+				// Delete all existing records
+				this.participantRepo.deleteAllInBatch();
+				this.mistakesInExcelService.deleteAll();
+
+				// Save mistakes in Excel data
+				excelDataMistakesList = this.mistakesInExcelService.saveAllExcelDataMistakes(excelDataMistakesList);
+
+				// Save participants, handling duplicates
+				for (Participant participant : participants) {
 					try {
-						this.participantRepo.save(chip);
+						this.participantRepo.save(participant);
 					} catch (Exception dex) {
-						dex.getMessage();
+						System.out.println(dex.getMessage());
+						MistakesInExcel mistakesInExcel = new MistakesInExcel();
+						mistakesInExcel.setDuplicate(extractDuplicateEntry(dex.getMessage()));
+						mistakesInExcelService.saveExcelDataMistake(mistakesInExcel);
 					}
-				});
+				}
 			}
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -114,7 +124,21 @@ public class ParticipantServiceImpl implements ParticipantService {
 	@Override
 	public long getCountByGender(String gender) {
 		return this.participantRepo.getCountByGender(gender);
-//		return 0;
+	}
+
+	public static String extractDuplicateEntry(String exceptionMessage) {
+		// Define the regular expression pattern
+		Pattern pattern = Pattern.compile("Duplicate entry '.*?'");
+
+		// Create a matcher for the input string
+		Matcher matcher = pattern.matcher(exceptionMessage);
+
+		// Find and return the matching substring
+		if (matcher.find()) {
+			return matcher.group(0);
+		} else {
+			return "No duplicate entry found";
+		}
 	}
 
 }

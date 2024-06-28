@@ -63,56 +63,6 @@ public class Validate {
 		return pattern.matcher(city).matches();
 	}
 
-	/*
-	 * public static boolean isBirthDateValid(String dobString) { try { // Parse the
-	 * date string LocalDate dob = LocalDate.parse(dobString,
-	 * DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-	 * 
-	 * // Check format (YYYY-MM-DD) if
-	 * (dob.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")).equals(dobString) ==
-	 * false) { return false; }
-	 * 
-	 * // Minimum date: 6 months before today LocalDate minDate =
-	 * LocalDate.now().minusMonths(6);
-	 * 
-	 * System.out.println(dob.isBefore(LocalDate.now()));
-	 * System.out.println(dob.isAfter(minDate));
-	 * 
-	 * // Valid if DOB is in the past and at least 6 months old return
-	 * dob.isBefore(LocalDate.now()) && dob.isBefore(minDate); } catch
-	 * (DateTimeParseException e) { // Invalid date format return false; } }
-	 */
-
-	/*
-	 * public static boolean isDateValid(Date dob) { final int MIN_AGE = 6; final
-	 * int MAX_AGE = 110; final SimpleDateFormat dateFormat = new
-	 * SimpleDateFormat("dd-MM-yyyy");
-	 * 
-	 * // Check for null input if (dob == null) { return false; }
-	 * 
-	 * // Validate format and convert to LocalDate String dobString =
-	 * dateFormat.format(dob); LocalDate birthDate = LocalDate.parse(dobString);
-	 * 
-	 * // Check if date is in the past if (birthDate.isAfter(LocalDate.now())) {
-	 * return false; }
-	 * 
-	 * LocalDate today = LocalDate.now(); long years =
-	 * ChronoUnit.YEARS.between(birthDate, today);
-	 * 
-	 * return years >= MIN_AGE && years <= MAX_AGE; }
-	 */
-	/*
-	 * public static boolean isDateValid(Date dob) { final int MIN_AGE = 6; final
-	 * int MAX_AGE = 110; System.out.println(dob);
-	 * 
-	 * // Check for null input if (dob == null) { return false; }
-	 * 
-	 * LocalDate birthDate =
-	 * dob.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(); LocalDate today
-	 * = LocalDate.now(); long years = ChronoUnit.YEARS.between(birthDate, today);
-	 * 
-	 * return years >= MIN_AGE && years <= MAX_AGE; }
-	 */
 
 	public static boolean isBirthdateValid(int year, int month, int day) {
 		LocalDate birthDate = LocalDate.of(year, month, day);
@@ -147,6 +97,8 @@ public class Validate {
 		if (mobileNumber == null || mobileNumber.isEmpty()) {
 			return false; // Empty string is not a valid mobile number
 		}
+		
+		
 
 		// Regex pattern for Indian mobile numbers (includes optional +91 or 0)
 		String pattern = "^[6-9]\\d{9}$";

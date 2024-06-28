@@ -34,6 +34,8 @@ public class ExcelUtil {
 	}
 
 	public void convertExcelToListOfProduct(InputStream is) {
+		participantList.clear();
+		mistakesInExcelList.clear();
 		try (XSSFWorkbook workbook = new XSSFWorkbook(is)) {
 			System.out.println(workbook.getSheetName(0));
 			System.out.println(workbook.getNumberOfSheets());
@@ -187,7 +189,9 @@ public class ExcelUtil {
 								participant.setTshirtSize(tshirtSize);
 							} else {
 								System.out.println("Row " + rowNumber + " Column " + cid + " Is not a string cell");
+								participant.setTshirtSize("");
 							}
+							break;
 						case 9:
 							if (cell.getCellType().toString().equals("STRING")) {
 								String race = cell.getStringCellValue().toString().trim();
@@ -204,7 +208,6 @@ public class ExcelUtil {
 						cid++;
 					}
 					mistakesInExcel.setRowOrChipNumber(rowNumber);
-					;
 					if (excelDataMistakesFlag)
 						mistakesInExcelList.add(mistakesInExcel);
 					else

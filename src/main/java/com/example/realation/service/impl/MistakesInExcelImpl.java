@@ -21,22 +21,27 @@ public class MistakesInExcelImpl implements MistakesInExcelService {
 
 	@Override
 	public List<MistakesInExcel> getAllMistake() {
-		return mistakesInExcelRepo.findAll();
+		return this.mistakesInExcelRepo.findAll();
 	}
 
 	@Override
 	public MistakesInExcel saveExcelDataMistake(MistakesInExcel mistakesInExcel) {
-		return mistakesInExcelRepo.save(mistakesInExcel);
+		return this.mistakesInExcelRepo.save(mistakesInExcel);
 	}
 
 	@Override
 	public List<MistakesInExcel> saveAllExcelDataMistakes(List<MistakesInExcel> mistakesInExcelsList) {
-		return mistakesInExcelRepo.saveAll(mistakesInExcelsList);
+		return this.mistakesInExcelRepo.saveAll(mistakesInExcelsList);
 	}
 
 	@Override
 	public void deleteAll() {
-		mistakesInExcelRepo.deleteAll();
+		this.mistakesInExcelRepo.deleteAllInBatch();
+	}
+
+	@Override
+	public long count() {
+		return this.mistakesInExcelRepo.count();
 	}
 
 }
