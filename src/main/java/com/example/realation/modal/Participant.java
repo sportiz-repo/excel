@@ -27,21 +27,28 @@ public class Participant {
 	@Column(nullable = false, unique = true)
 	private String pid;
 	@Column(nullable = false)
-	private String name;
+	private String firstName;
+	@Column(nullable = false)
+	private String lastName;
 	@Column(nullable = false)
 	@Temporal(TemporalType.DATE)
 	private LocalDate birthdate;
 	@Column(nullable = false)
+	private int age;
+	@Column(nullable = false)
 	private String gender;
+	private String city;
+	private String country;
 	@Column(nullable = false)
 	private String race;
-	private String city;
-	@Column(nullable = false, unique = true)
-	private String phone;
+	@Column(nullable = false)
+	private String category;
 	@Column(nullable = false, unique = true)
 	private String email;
+	@Column(nullable = false, unique = true)
+	private String phone;
 	@Column(nullable = false)
-	private String tshirtSize = "s";
+	private String tshirtSize;
 	@Column(columnDefinition = "boolean default true")
 	private boolean smsSent;
 
@@ -69,12 +76,20 @@ public class Participant {
 		this.pid = pid;
 	}
 
-	public String getName() {
-		return name;
+	public String getFirstName() {
+		return firstName;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 
 	public LocalDate getBirthdate() {
@@ -85,20 +100,20 @@ public class Participant {
 		this.birthdate = birthdate;
 	}
 
+	public int getAge() {
+		return age;
+	}
+
+	public void setAge(int age) {
+		this.age = age;
+	}
+
 	public String getGender() {
 		return gender;
 	}
 
 	public void setGender(String gender) {
 		this.gender = gender;
-	}
-
-	public String getRace() {
-		return race;
-	}
-
-	public void setRace(String race) {
-		this.race = race;
 	}
 
 	public String getCity() {
@@ -109,12 +124,28 @@ public class Participant {
 		this.city = city;
 	}
 
-	public String getPhone() {
-		return phone;
+	public String getCountry() {
+		return country;
 	}
 
-	public void setPhone(String phone) {
-		this.phone = phone;
+	public void setCountry(String country) {
+		this.country = country;
+	}
+
+	public String getRace() {
+		return race;
+	}
+
+	public void setRace(String race) {
+		this.race = race;
+	}
+
+	public String getCategory() {
+		return category;
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
 	}
 
 	public String getEmail() {
@@ -123,6 +154,14 @@ public class Participant {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
 
 	public String getTshirtSize() {
