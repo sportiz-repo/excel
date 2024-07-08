@@ -5,23 +5,17 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
-@NoArgsConstructor
-@AllArgsConstructor
-@ToString
-@Builder
 @Entity
 @Table(name = "results")
+@AllArgsConstructor
+@NoArgsConstructor
 public class Results {
 	@Id
-	private int pid;
-	@Column(columnDefinition = "integer default 0")
+	private String pid;
+	@Column(name = "cp1_time", columnDefinition = "integer default 0")
 	private int startTime;
-	@Column(columnDefinition = "integer default 0")
-	private int cp1_time;
 	@Column(columnDefinition = "integer default 0")
 	private int cp2_time;
 	@Column(columnDefinition = "integer default 0")
@@ -31,17 +25,23 @@ public class Results {
 	@Column(columnDefinition = "integer default 0")
 	private int cp5_time;
 	@Column(columnDefinition = "integer default 0")
+	private int cp6_time;
+	@Column(columnDefinition = "integer default 0")
+	private int cp7_time;
+	@Column(columnDefinition = "integer default 0")
+	private int cp8_time;
+	@Column(columnDefinition = "integer default 0")
+	private int cp9_time;
+	@Column(name = "cp99_time", columnDefinition = "integer default 0")
 	private int finishTime;
 
-//	@OneToOne(mappedBy = "results", cascade = CascadeType.ALL, fetch = FetchType.EAGER) // One-to-One relationship with
-//	@JoinColumn(name = "pid", referencedColumnName = "pid") // Foreign key based on pid referencing chips
-//	private Chips chips;
+	private int total = -1;
 
-	public int getPid() {
+	public String getPid() {
 		return pid;
 	}
 
-	public void setPid(int pid) {
+	public void setPid(String pid) {
 		this.pid = pid;
 	}
 
@@ -51,14 +51,6 @@ public class Results {
 
 	public void setStartTime(int startTime) {
 		this.startTime = startTime;
-	}
-
-	public int getCp1_time() {
-		return cp1_time;
-	}
-
-	public void setCp1_time(int cp1_time) {
-		this.cp1_time = cp1_time;
 	}
 
 	public int getCp2_time() {
@@ -93,6 +85,38 @@ public class Results {
 		this.cp5_time = cp5_time;
 	}
 
+	public int getCp6_time() {
+		return cp6_time;
+	}
+
+	public void setCp6_time(int cp6_time) {
+		this.cp6_time = cp6_time;
+	}
+
+	public int getCp7_time() {
+		return cp7_time;
+	}
+
+	public void setCp7_time(int cp7_time) {
+		this.cp7_time = cp7_time;
+	}
+
+	public int getCp8_time() {
+		return cp8_time;
+	}
+
+	public void setCp8_time(int cp8_time) {
+		this.cp8_time = cp8_time;
+	}
+
+	public int getCp9_time() {
+		return cp9_time;
+	}
+
+	public void setCp9_time(int cp9_time) {
+		this.cp9_time = cp9_time;
+	}
+
 	public int getFinishTime() {
 		return finishTime;
 	}
@@ -101,12 +125,12 @@ public class Results {
 		this.finishTime = finishTime;
 	}
 
-//	public Chips getChips() {
-//		return chips;
-//	}
-//
-//	public void setChips(Chips chips) {
-//		this.chips = chips;
-//	}
+	public int getTotal() {
+		return total;
+	}
+
+	public void setTotal(int total) {
+		this.total = total;
+	}
 
 }
