@@ -24,7 +24,7 @@ public interface ParticipantService {
 
 	public List<Participant> getParticipantByGender(String gender);
 
-	public List<Participant> getParticipantByName(String name);
+	public List<Participant> getParticipantByFirstName(String firstName);
 	
 	public long getCountByGender(String gender);
 }

@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Iterator;
 
@@ -60,18 +61,20 @@ public class ExcelParticipantReader implements ItemReader<Participant> {
 	private Participant mapRowToParticipant(Row row) {
 		Participant participant = new Participant();
 		participant.setChip(row.getCell(0).getStringCellValue());
-		participant.setPid(row.getCell(1).getStringCellValue());
+		participant.setPid(String.valueOf(row.getCell(1).getNumericCellValue()));
 		participant.setFirstName(row.getCell(2).getStringCellValue());
 		participant.setLastName(row.getCell(3).getStringCellValue());
 		participant.setBirthdate(
-				LocalDate.parse(row.getCell(4).getStringCellValue(), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+				row.getCell(4).getLocalDateTimeCellValue().toLocalDate()	);
 		participant.setAge((int) row.getCell(5).getNumericCellValue());
-		participant.setGender(row.getCell(4).getStringCellValue());
-		participant.setRace(row.getCell(5).getStringCellValue());
-		participant.setCity(row.getCell(6).getStringCellValue());
-		participant.setPhone(row.getCell(7).getStringCellValue());
-		participant.setEmail(row.getCell(8).getStringCellValue());
-		participant.setTshirtSize(row.getCell(9).getStringCellValue());
+		participant.setGender(row.getCell(6).getStringCellValue());
+		participant.setCity(row.getCell(7).getStringCellValue());
+		participant.setRace(row.getCell(8).getStringCellValue());
+		participant.setCategory(row.getCell(9).getStringCellValue());
+		participant.setPhone(row.getCell(10).getStringCellValue());
+		participant.setEmail(row.getCell(11).getStringCellValue());
+		participant.setTshirtSize(row.getCell(12).getStringCellValue());
+		participant.setCountry(row.getCell(13).getStringCellValue());
 		participant.setRowNumber(row.getRowNum());
 		participant.setSheetNumber(sheetNumber);
 		return participant;

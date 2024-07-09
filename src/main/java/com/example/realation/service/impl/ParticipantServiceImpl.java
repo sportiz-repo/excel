@@ -1,6 +1,5 @@
 package com.example.realation.service.impl;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Matcher;
@@ -13,7 +12,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.example.realation.modal.MistakesInExcel;
 import com.example.realation.modal.Participant;
 import com.example.realation.repo.ParticipantRepo;
 import com.example.realation.service.MistakesInExcelService;
@@ -67,36 +65,36 @@ public class ParticipantServiceImpl implements ParticipantService {
 	@Override
 //	@Transactional
 	public String saveAllFromExcel(MultipartFile file) {
-		List<Participant> participants = null;
-		List<MistakesInExcel> excelDataMistakesList = null;
-		try {
-			excelUtil.convertExcelToListOfProduct(file.getInputStream());
-			participants = this.excelUtil.getParticipantList();
-			excelDataMistakesList = this.excelUtil.getExcelDataMistakesList();
-			synchronized (this) {
-				// Delete all existing records
-				this.participantRepo.deleteAllInBatch();
-				this.mistakesInExcelService.deleteAll();
-
-				// Save mistakes in Excel data
-				excelDataMistakesList = this.mistakesInExcelService.saveAllExcelDataMistakes(excelDataMistakesList);
-
-				// Save participants, handling duplicates
-				for (Participant participant : participants) {
-					try {
-						this.participantRepo.save(participant);
-					} catch (Exception dex) {
-						System.out.println(dex.getMessage());
-						MistakesInExcel mistakesInExcel = new MistakesInExcel();
-						mistakesInExcel.setDuplicate(extractDuplicateEntry(dex.getMessage()));
-						mistakesInExcelService.saveExcelDataMistake(mistakesInExcel);
-					}
-				}
-			}
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+//		List<Participant> participants = null;
+//		List<MistakesInExcel> excelDataMistakesList = null;
+//		try {
+//			excelUtil.convertExcelToListOfProduct(file.getInputStream());
+//			participants = this.excelUtil.getParticipantList();
+//			excelDataMistakesList = this.excelUtil.getExcelDataMistakesList();
+//			synchronized (this) {
+//				// Delete all existing records
+//				this.participantRepo.deleteAllInBatch();
+//				this.mistakesInExcelService.deleteAll();
+//
+//				// Save mistakes in Excel data
+//				excelDataMistakesList = this.mistakesInExcelService.saveAllExcelDataMistakes(excelDataMistakesList);
+//
+//				// Save participants, handling duplicates
+//				for (Participant participant : participants) {
+//					try {
+//						this.participantRepo.save(participant);
+//					} catch (Exception dex) {
+//						System.out.println(dex.getMessage());
+//						MistakesInExcel mistakesInExcel = new MistakesInExcel();
+//						mistakesInExcel.setDuplicate(extractDuplicateEntry(dex.getMessage()));
+//						mistakesInExcelService.saveExcelDataMistake(mistakesInExcel);
+//					}
+//				}
+//			}
+//
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
 		return "Done";
 	}
 
@@ -117,8 +115,8 @@ public class ParticipantServiceImpl implements ParticipantService {
 	}
 
 	@Override
-	public List<Participant> getParticipantByName(String name) {
-		return this.participantRepo.getByName(name);
+	public List<Participant> getParticipantByFirstName(String firstName) {
+		return this.participantRepo.getByFirstName(firstName);
 	}
 
 	@Override

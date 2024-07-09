@@ -9,9 +9,9 @@ public class ValidateNameTest {
 
 	@Test
 	public void testValidBasicName() {
-		String[] validNames = { "John Doe", "Jane Doe-Smith", "O'Brian", "Mr.  Sandeepan" };
+		String[] validNames = {"Prasanta Kumar", "Nath","John Doe", "Jane Doe-Smith", "O'Brian", "Mr.  Sandeepan" };
 		for (String name : validNames) {
-			assertTrue(Validate.validateName(name));
+			assertTrue(Validate.isNameValide(name));
 		}
 	}
 
@@ -19,7 +19,7 @@ public class ValidateNameTest {
 	public void testInvalidBasicName() {
 		String[] invalidNames = { null, "", "123", "!@#$%^", "John, Doe" };
 		for (String name : invalidNames) {
-			assertFalse(Validate.validateName(name));
+			assertFalse(Validate.isNameValide(name));
 		}
 	}
 
@@ -27,7 +27,7 @@ public class ValidateNameTest {
 	public void testValidNameWithCapitalization() {
 		String[] validNames = { "John Doe", "Jane Doe-Smith", "O'Brian" };
 		for (String name : validNames) {
-			assertTrue(Validate.validateName(name));
+			assertTrue(Validate.isNameValide(name));
 		}
 	}
 

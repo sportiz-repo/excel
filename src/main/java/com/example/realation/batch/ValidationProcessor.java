@@ -28,12 +28,12 @@ public class ValidationProcessor implements ItemProcessor<Participant, Participa
 			mistake.setPid(participant.getPid());
 			hasMistake = true;
 		}
-		if (Validate.isNameValide(participant.getFirstName())) {
+		if (!Validate.isNameValide(participant.getFirstName())) {
 			mistake.setFirstName("incurrect");
 			hasMistake = true;
 		}
-		if (Validate.isNameValide(participant.getLastName())) {
-			mistake.setFirstName("incurrect");
+		if (!Validate.isNameValide(participant.getLastName())) {
+			mistake.setLastName("incurrect");
 			hasMistake = true;
 		}
 		if (participant.getBirthdate() == null) {
@@ -53,11 +53,11 @@ public class ValidationProcessor implements ItemProcessor<Participant, Participa
 			}
 		}
 
-		if (Validate.isCityOrContryValide(participant.getCity())) {
+		if (!Validate.isCityOrContryValide(participant.getCity())) {
 			mistake.setCity("incurrect");
 			hasMistake = true;
 		}
-		if (Validate.isCityOrContryValide(participant.getCountry())) {
+		if (!Validate.isCityOrContryValide(participant.getCountry())) {
 			mistake.setCountry("incurrect");
 			hasMistake = true;
 		}
@@ -69,7 +69,7 @@ public class ValidationProcessor implements ItemProcessor<Participant, Participa
 			mistake.setCategory("incurrect");
 			hasMistake = true;
 		}
-		if (Validate.isEmailValide(participant.getEmail())) {
+		if (!Validate.isEmailValide(participant.getEmail())) {
 			mistake.setEmail("incurrect");
 			hasMistake = true;
 		}
@@ -83,6 +83,7 @@ public class ValidationProcessor implements ItemProcessor<Participant, Participa
 		}
 
 		if (hasMistake) {
+			System.out.println(mistake);
 			mistakesInExcelRepo.save(mistake);
 			return null; // Skip this participant
 		}

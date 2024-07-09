@@ -12,10 +12,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class MistakesInExcel {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue()
 	private Long id;
 	private int rowNumber = -1;
-	private int sheetNumber;
+	private int sheetNumber = 0;
 	private String chipNumber = "";
 	private String pid = "";
 	private String firstName = "";
@@ -29,7 +29,7 @@ public class MistakesInExcel {
 	private String category = "";
 	private String email = "";
 	private String phone = "";
-	private String tshirtSize;
+	private String tshirtSize = "";
 	private String duplicate = "";
 
 	public Long getId() {

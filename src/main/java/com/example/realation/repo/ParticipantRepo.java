@@ -18,7 +18,7 @@ public interface ParticipantRepo extends JpaRepository<Participant, Long> {
 
 	public List<Participant> getByGender(String gender);
 
-	public List<Participant> getByName(String name);
+	public List<Participant> getByFirstName(String firstName);
 
 	@Query("SELECT COUNT(u) FROM Participant u WHERE u.gender = :gender")
 	long getCountByGender(@Param("gender") String gender);

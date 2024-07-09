@@ -9,35 +9,35 @@ public class ValidateChipNumberTest {
 	@Test
 	public void testValidString() {
 		String validString = "1234567";
-		assertTrue(Validate.idChipValide(validString));
+		assertTrue(Validate.isChipValide(validString));
 	}
 
 	@Test
 	public void testEmptyString() {
 		String emptyString = "";
-		assertFalse(Validate.idChipValide(emptyString));
+		assertFalse(Validate.isChipValide(emptyString));
 	}
 
 	@Test
 	public void testNullString() {
 		String nullString = null;
-		assertFalse(Validate.idChipValide(nullString));
+		assertFalse(Validate.isChipValide(nullString));
 	}
 
 	@Test
 	public void testInvalidLength() {
 		String invalidLengthString = "123456";
-		assertFalse(Validate.idChipValide(invalidLengthString));
+		assertFalse(Validate.isChipValide(invalidLengthString));
 	}
 
 	@Test
 	public void testNonNumericCharacters() {
 		String nonNumericString = "123abc456";
-		assertFalse(Validate.idChipValide(nonNumericString));
+		assertFalse(Validate.isChipValide(nonNumericString));
 	}
 	@Test
 	public void testNumericCharactersStartsWithZero() {
 		String nonNumericString = "0057981";
-		assertTrue(Validate.idChipValide(nonNumericString));
+		assertTrue(Validate.isChipValide(nonNumericString));
 	}
 }
