@@ -53,7 +53,7 @@ public class Validate {
 		}
 	}
 
-	public static boolean validateCityFormat(String city) {
+	public static boolean isCityOrContryValide(String city) {
 		if (city == null || city.isEmpty()) {
 			return false;
 		}
