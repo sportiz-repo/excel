@@ -9,6 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
@@ -43,14 +44,17 @@ public class Participant {
 	private String race;
 	@Column(nullable = false)
 	private String category;
-	@Column(nullable = false, unique = true)
 	private String email;
-	@Column(nullable = false, unique = true)
 	private String phone;
 	@Column(nullable = false)
 	private String tshirtSize;
 	@Column(columnDefinition = "boolean default true")
 	private boolean smsSent;
+
+	@Transient
+	private int rowNumber;
+	@Transient
+	private int sheetNumber;
 
 	public long getId() {
 		return id;
@@ -178,6 +182,22 @@ public class Participant {
 
 	public void setSmsSent(boolean smsSent) {
 		this.smsSent = smsSent;
+	}
+
+	public int getRowNumber() {
+		return rowNumber;
+	}
+
+	public void setRowNumber(int rowNumber) {
+		this.rowNumber = rowNumber;
+	}
+
+	public int getSheetNumber() {
+		return sheetNumber;
+	}
+
+	public void setSheetNumber(int sheetNumber) {
+		this.sheetNumber = sheetNumber;
 	}
 
 }
