@@ -19,7 +19,6 @@ import org.springframework.transaction.PlatformTransactionManager;
 import com.example.realation.modal.Participant;
 import com.example.realation.repo.MistakesInExcelRepo;
 import com.example.realation.repo.ParticipantRepo;
-import com.example.realation.util.ExcelParticipantReader;
 
 @Configuration
 public class BatchConfig {
