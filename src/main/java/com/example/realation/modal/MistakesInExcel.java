@@ -14,16 +14,22 @@ public class MistakesInExcel {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private int rowOrChipNumber = -1;
+	private int rowNumber = -1;
+	private int sheetNumber;
 	private String chipNumber = "";
 	private String pid = "";
-	private String name = "";
+	private String firstName = "";
+	private String lastName = "";
 	private String birthdate = "";
+	private String age = "";
 	private String gender = "";
 	private String city = "";
+	private String country = "";
+	private String race = "";
+	private String category = "";
 	private String email = "";
 	private String phone = "";
-	private String race = "";
+	private String tshirtSize;
 	private String duplicate = "";
 
 	public Long getId() {
@@ -34,12 +40,20 @@ public class MistakesInExcel {
 		this.id = id;
 	}
 
-	public int getRowOrChipNumber() {
-		return rowOrChipNumber;
+	public int getRowNumber() {
+		return rowNumber;
 	}
 
-	public void setRowOrChipNumber(int rowOrChipNumber) {
-		this.rowOrChipNumber = rowOrChipNumber;
+	public void setRowNumber(int rowNumber) {
+		this.rowNumber = rowNumber;
+	}
+
+	public int getSheetNumber() {
+		return sheetNumber;
+	}
+
+	public void setSheetNumber(int sheetNumber) {
+		this.sheetNumber = sheetNumber;
 	}
 
 	public String getChipNumber() {
@@ -58,12 +72,20 @@ public class MistakesInExcel {
 		this.pid = pid;
 	}
 
-	public String getName() {
-		return name;
+	public String getFirstName() {
+		return firstName;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 
 	public String getBirthdate() {
@@ -72,6 +94,14 @@ public class MistakesInExcel {
 
 	public void setBirthdate(String birthdate) {
 		this.birthdate = birthdate;
+	}
+
+	public String getAge() {
+		return age;
+	}
+
+	public void setAge(String age) {
+		this.age = age;
 	}
 
 	public String getGender() {
@@ -90,6 +120,30 @@ public class MistakesInExcel {
 		this.city = city;
 	}
 
+	public String getCountry() {
+		return country;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
+	}
+
+	public String getRace() {
+		return race;
+	}
+
+	public void setRace(String race) {
+		this.race = race;
+	}
+
+	public String getCategory() {
+		return category;
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
+	}
+
 	public String getEmail() {
 		return email;
 	}
@@ -106,12 +160,12 @@ public class MistakesInExcel {
 		this.phone = phone;
 	}
 
-	public String getRace() {
-		return race;
+	public String getTshirtSize() {
+		return tshirtSize;
 	}
 
-	public void setRace(String race) {
-		this.race = race;
+	public void setTshirtSize(String tshirtSize) {
+		this.tshirtSize = tshirtSize;
 	}
 
 	public String getDuplicate() {
