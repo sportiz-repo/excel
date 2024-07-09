@@ -17,17 +17,20 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import com.example.realation.modal.Participant;
+import com.example.realation.repo.MistakesInExcelRepo;
 import com.example.realation.repo.ParticipantRepo;
 import com.example.realation.util.ExcelParticipantReader;
 
 @Configuration
 public class BatchConfig {
 	private final ParticipantRepo participantRepo;
+	private final MistakesInExcelRepo mistakesInExcelRepo;
 
 	@Autowired
-	public BatchConfig(ParticipantRepo participantRepo) {
+	public BatchConfig(ParticipantRepo participantRepo, MistakesInExcelRepo mistakesInExcelRepo) {
 		super();
 		this.participantRepo = participantRepo;
+		this.mistakesInExcelRepo = mistakesInExcelRepo;
 	}
 
 	@Bean
@@ -49,5 +52,15 @@ public class BatchConfig {
 		return new ExcelParticipantReader(Paths.get(Paths.get("").toAbsolutePath() + File.separator + "src"
 				+ File.separator + "main" + File.separator + "resources" + File.separator + "static" + File.separator
 				+ "excel" + File.separator + "participants.xlsx").toString());
+	}
+
+	@Bean
+	public ItemProcessor<Participant, Participant> processor() {
+		return new ValidationProcessor(mistakesInExcelRepo);
+	}
+
+	@Bean
+	public ItemWriter<Participant> writer() {
+		return items -> participantRepo.saveAll(items);
 	}
 }
