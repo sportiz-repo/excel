@@ -20,6 +20,7 @@ public class ExcelParticipantReader implements ItemReader<Participant> {
 	private final String filePath;
 	private Iterator<Sheet> sheetIterator;
 	private Iterator<Row> rowIterator;
+	private int sheetNumber = -1;
 
 	public ExcelParticipantReader(String filePath) {
 		this.filePath = filePath;
@@ -28,6 +29,7 @@ public class ExcelParticipantReader implements ItemReader<Participant> {
 	@Override
 	public Participant read() throws Exception {
 		if (sheetIterator == null) {
+			sheetNumber = -1;
 			initialize();
 		}
 
@@ -38,6 +40,7 @@ public class ExcelParticipantReader implements ItemReader<Participant> {
 			} else if (sheetIterator.hasNext()) {
 				Sheet sheet = sheetIterator.next();
 				rowIterator = sheet.iterator();
+				sheetNumber++;
 				// Skip header row
 				if (rowIterator.hasNext()) {
 					rowIterator.next();
@@ -69,7 +72,8 @@ public class ExcelParticipantReader implements ItemReader<Participant> {
 		participant.setPhone(row.getCell(7).getStringCellValue());
 		participant.setEmail(row.getCell(8).getStringCellValue());
 		participant.setTshirtSize(row.getCell(9).getStringCellValue());
-		participant.setSmsSent(row.getCell(10).getBooleanCellValue());
+		participant.setRowNumber(row.getRowNum());
+		participant.setSheetNumber(sheetNumber);
 		return participant;
 	}
 }
