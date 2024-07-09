@@ -21,7 +21,7 @@ public class Validate {
 		return name.length() >= 2 && name.length() <= 30 && name.matches(regex);
 	}
 
-	public static boolean idChipValide(String chipNumber) {
+	public static boolean isChipValide(String chipNumber) {
 		if (chipNumber == null || chipNumber.isBlank()) {
 			return false;
 		}
