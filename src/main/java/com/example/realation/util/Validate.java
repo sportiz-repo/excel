@@ -12,7 +12,7 @@ public class Validate {
 	private static final Set<String> VALID_SIZES = new HashSet<>(
 			Arrays.asList("XXS", "XS", "S", "M", "L", "XL", "XXL", "XXXL"));
 
-	public static boolean validateName(String name) {
+	public static boolean isNameValide(String name) {
 		if (name == null || name.isBlank()) {
 			return false;
 		}
