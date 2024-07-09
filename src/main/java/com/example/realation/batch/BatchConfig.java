@@ -1,5 +1,8 @@
 package com.example.realation.batch;
 
+import java.io.File;
+import java.nio.file.Paths;
+
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.job.builder.JobBuilder;
@@ -43,7 +46,8 @@ public class BatchConfig {
 
 	@Bean
 	public ItemReader<Participant> reader() {
-		return new ExcelParticipantReader("sample-data.xlsx");
+		return new ExcelParticipantReader(Paths.get(Paths.get("").toAbsolutePath() + File.separator + "src"
+				+ File.separator + "main" + File.separator + "resources" + File.separator + "static" + File.separator
+				+ "excel" + File.separator + "participants.xlsx").toString());
 	}
-
 }

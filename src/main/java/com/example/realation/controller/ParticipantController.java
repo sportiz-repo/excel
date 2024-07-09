@@ -17,20 +17,25 @@ import org.springframework.web.multipart.MultipartFile;
 import com.example.realation.modal.Participant;
 import com.example.realation.service.ParticipantService;
 import com.example.realation.util.ExcelUtil;
+import com.example.realation.util.FileSaverUtil;
 
 @RestController
 @RequestMapping("/participant")
 public class ParticipantController {
 	private final ParticipantService participantService;
 	private final ExcelUtil excelUtil;
+	private final FileSaverUtil fileSaverUtil;
 
 	@Autowired
-	public ParticipantController(ParticipantService participantService, ExcelUtil excelUtil) {
+	public ParticipantController(ParticipantService participantService, ExcelUtil excelUtil,
+			FileSaverUtil fileSaverUtil) {
 		super();
 		this.participantService = participantService;
 		this.excelUtil = excelUtil;
-		System.out.println(excelUtil);
+		this.fileSaverUtil = fileSaverUtil;
 	}
+
+	
 
 	@PostMapping("/create")
 	public Participant createChips(@RequestBody Participant participant) {
@@ -71,7 +76,8 @@ public class ParticipantController {
 	@PostMapping("/upload")
 	public ResponseEntity<String> upload(@RequestParam("file") MultipartFile file) {
 		if (excelUtil.isExcelFormat(file)) {
-			String participants = this.participantService.saveAllFromExcel(file);
+			fileSaverUtil.participantExcelSaver(file);
+//			String participants = this.participantService.saveAllFromExcel(file);
 			return ResponseEntity.status(HttpStatus.OK).body("{\"success\": true}");
 		}
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
