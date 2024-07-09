@@ -77,7 +77,7 @@ public class Validate {
 		return age >= 6 && age <= 110;
 	}
 
-	public static boolean isEmailValid(String email) { // Renamed to isEmailValid
+	public static boolean isEmailValide(String email) { // Renamed to isEmailValid
 		if (email == null || email.isEmpty()) {
 			return false; // Empty email is not valid
 		}
