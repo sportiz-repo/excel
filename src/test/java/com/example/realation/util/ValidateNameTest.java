@@ -9,7 +9,7 @@ public class ValidateNameTest {
 
 	@Test
 	public void testValidBasicName() {
-		String[] validNames = {"Prasanta Kumar", "Nath","John Doe", "Jane Doe-Smith", "O'Brian", "Mr.  Sandeepan" };
+		String[] validNames = {"Prasanta Kumar", "G.B","John Doe", "Jane Doe-Smith", "O'Brian", "Mr.  Sandeepan" };
 		for (String name : validNames) {
 			assertTrue(Validate.isNameValide(name));
 		}

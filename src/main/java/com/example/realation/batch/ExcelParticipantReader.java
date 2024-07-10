@@ -3,9 +3,6 @@ package com.example.realation.batch;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Iterator;
 
 import org.apache.poi.ss.usermodel.Row;
@@ -60,21 +57,65 @@ public class ExcelParticipantReader implements ItemReader<Participant> {
 
 	private Participant mapRowToParticipant(Row row) {
 		Participant participant = new Participant();
-		participant.setChip(row.getCell(0).getStringCellValue());
-		participant.setPid(String.valueOf(row.getCell(1).getNumericCellValue()));
-		participant.setFirstName(row.getCell(2).getStringCellValue());
-		participant.setLastName(row.getCell(3).getStringCellValue());
-		participant.setBirthdate(
-				row.getCell(4).getLocalDateTimeCellValue().toLocalDate()	);
-		participant.setAge((int) row.getCell(5).getNumericCellValue());
-		participant.setGender(row.getCell(6).getStringCellValue());
-		participant.setCity(row.getCell(7).getStringCellValue());
-		participant.setRace(row.getCell(8).getStringCellValue());
-		participant.setCategory(row.getCell(9).getStringCellValue());
-		participant.setPhone(row.getCell(10).getStringCellValue());
-		participant.setEmail(row.getCell(11).getStringCellValue());
-		participant.setTshirtSize(row.getCell(12).getStringCellValue());
-		participant.setCountry(row.getCell(13).getStringCellValue());
+		try {
+			participant.setChip(row.getCell(0).getStringCellValue());
+		} catch (Exception e) {
+			System.out.println(participant);
+		}
+		try {
+			participant.setPid(String.valueOf((int) row.getCell(1).getNumericCellValue()));
+		} catch (Exception e) {
+		}
+		try {
+			participant.setFirstName(row.getCell(2).getStringCellValue());
+		} catch (Exception e) {
+		}
+		try {
+			participant.setLastName(row.getCell(3).getStringCellValue());
+		} catch (Exception e) {
+		}
+		try {
+			participant.setBirthdate(row.getCell(4).getLocalDateTimeCellValue().toLocalDate());
+		} catch (Exception e) {
+		}
+		try {
+			participant.setAge((int) row.getCell(5).getNumericCellValue());
+		} catch (Exception e) {
+		}
+		try {
+			participant.setGender(row.getCell(6).getStringCellValue());
+		} catch (Exception e) {
+		}
+		try {
+			participant.setCity(row.getCell(7).getStringCellValue());
+		} catch (Exception e) {
+		}
+		try {
+			participant.setRace(String.valueOf(row.getCell(8).getStringCellValue()));
+		} catch (Exception e) {
+		}
+		try {
+			participant.setCategory(row.getCell(9).getStringCellValue());
+		} catch (Exception e) {
+		}
+		try {
+			participant.setEmail(row.getCell(10).getStringCellValue());
+		} catch (Exception e) {
+		}
+		try {
+			participant.setPhone(row.getCell(11).getStringCellValue());
+		} catch (Exception e) {
+			try {
+				participant.setPhone(String.valueOf((long) row.getCell(11).getNumericCellValue()));
+			} catch (Exception e1) {}
+		}
+		try {
+			participant.setTshirtSize(row.getCell(12).getStringCellValue());
+		} catch (Exception e) {
+		}
+		try {
+			participant.setCountry(row.getCell(13).getStringCellValue());
+		} catch (Exception e) {}
 		participant.setRowNumber(row.getRowNum());
 		participant.setSheetNumber(sheetNumber);
 		return participant;

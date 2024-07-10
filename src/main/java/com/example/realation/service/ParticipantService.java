@@ -27,4 +27,6 @@ public interface ParticipantService {
 	public List<Participant> getParticipantByFirstName(String firstName);
 	
 	public long getCountByGender(String gender);
+	
+	public void deleteAll();
 }

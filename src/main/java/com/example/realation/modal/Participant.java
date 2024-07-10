@@ -200,4 +200,15 @@ public class Participant {
 		this.sheetNumber = sheetNumber;
 	}
 
+	@Override
+	public String toString() {
+		return "Participant [id=" + id + ", chip=" + chip + ", pid=" + pid + ", firstName=" + firstName + ", lastName="
+				+ lastName + ", birthdate=" + birthdate + ", age=" + age + ", gender=" + gender + ", city=" + city
+				+ ", country=" + country + ", race=" + race + ", category=" + category + ", email=" + email + ", phone="
+				+ phone + ", tshirtSize=" + tshirtSize + ", smsSent=" + smsSent + ", rowNumber=" + rowNumber
+				+ ", sheetNumber=" + sheetNumber + "]";
+	}
+	
+	
+
 }

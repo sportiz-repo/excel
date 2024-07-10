@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.realation.modal.Participant;
+import com.example.realation.service.MistakesInExcelService;
 import com.example.realation.service.ParticipantService;
 import com.example.realation.service.impl.BatchService;
 import com.example.realation.util.ExcelUtil;
@@ -27,15 +28,17 @@ public class ParticipantController {
 	private final ExcelUtil excelUtil;
 	private final FileSaverUtil fileSaverUtil;
 	private final BatchService batchService;
+	private final MistakesInExcelService mistakesInExcelService;
 
 	@Autowired
 	public ParticipantController(ParticipantService participantService, ExcelUtil excelUtil,
-			FileSaverUtil fileSaverUtil, BatchService batchService) {
+			FileSaverUtil fileSaverUtil, BatchService batchService, MistakesInExcelService mistakesInExcelService) {
 		super();
 		this.participantService = participantService;
 		this.excelUtil = excelUtil;
 		this.fileSaverUtil = fileSaverUtil;
 		this.batchService = batchService;
+		this.mistakesInExcelService = mistakesInExcelService;
 	}
 
 	@PostMapping("/create")
@@ -78,6 +81,8 @@ public class ParticipantController {
 	public ResponseEntity<String> upload(@RequestParam("file") MultipartFile file) {
 		if (excelUtil.isExcelFormat(file)) {
 			if (fileSaverUtil.participantExcelSaver(file)) {
+				this.participantService.deleteAll();
+				this.mistakesInExcelService.deleteAll();
 				batchService.startJob();
 			}
 //			String participants = this.participantService.saveAllFromExcel(file);

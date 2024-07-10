@@ -14,23 +14,16 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.example.realation.modal.Participant;
 import com.example.realation.repo.ParticipantRepo;
-import com.example.realation.service.MistakesInExcelService;
 import com.example.realation.service.ParticipantService;
-import com.example.realation.util.ExcelUtil;
 
 @Service
 public class ParticipantServiceImpl implements ParticipantService {
 	private final ParticipantRepo participantRepo;
-	private final ExcelUtil excelUtil;
-	private final MistakesInExcelService mistakesInExcelService;
 
 	@Autowired
-	public ParticipantServiceImpl(ParticipantRepo participantRepo, ExcelUtil excelUtil,
-			MistakesInExcelService mistakesInExcelService) {
+	public ParticipantServiceImpl(ParticipantRepo participantRepo) {
 		super();
 		this.participantRepo = participantRepo;
-		this.excelUtil = excelUtil;
-		this.mistakesInExcelService = mistakesInExcelService;
 	}
 
 	@Override
@@ -137,6 +130,11 @@ public class ParticipantServiceImpl implements ParticipantService {
 		} else {
 			return "No duplicate entry found";
 		}
+	}
+
+	@Override
+	public void deleteAll() {
+		participantRepo.deleteAll();
 	}
 
 }

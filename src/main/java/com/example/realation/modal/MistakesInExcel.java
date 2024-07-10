@@ -12,9 +12,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class MistakesInExcel {
 	@Id
-	@GeneratedValue()
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	private int rowNumber = -1;
+	private int rowNo = -1;
 	private int sheetNumber = 0;
 	private String chipNumber = "";
 	private String pid = "";
@@ -40,12 +40,12 @@ public class MistakesInExcel {
 		this.id = id;
 	}
 
-	public int getRowNumber() {
-		return rowNumber;
+	public int getRowNo() {
+		return rowNo;
 	}
 
-	public void setRowNumber(int rowNumber) {
-		this.rowNumber = rowNumber;
+	public void setRowNo(int rowNo) {
+		this.rowNo = rowNo;
 	}
 
 	public int getSheetNumber() {
@@ -175,5 +175,16 @@ public class MistakesInExcel {
 	public void setDuplicate(String duplicate) {
 		this.duplicate = duplicate;
 	}
+
+	@Override
+	public String toString() {
+		return "MistakesInExcel [id=" + id + ", rowNo=" + rowNo + ", sheetNumber=" + sheetNumber + ", chipNumber="
+				+ chipNumber + ", pid=" + pid + ", firstName=" + firstName + ", lastName=" + lastName + ", birthdate="
+				+ birthdate + ", age=" + age + ", gender=" + gender + ", city=" + city + ", country=" + country
+				+ ", race=" + race + ", category=" + category + ", email=" + email + ", phone=" + phone
+				+ ", tshirtSize=" + tshirtSize + ", duplicate=" + duplicate + "]";
+	}
+	
+	
 
 }

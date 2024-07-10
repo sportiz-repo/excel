@@ -20,7 +20,7 @@ public class ValidationProcessor implements ItemProcessor<Participant, Participa
 		MistakesInExcel mistake = new MistakesInExcel();
 		boolean hasMistake = false;
 
-		if (Validate.isChipValide(participant.getChip())) {
+		if (!Validate.isChipValide(participant.getChip())) {
 			mistake.setChipNumber("incurrect");
 			hasMistake = true;
 		}
@@ -29,10 +29,12 @@ public class ValidationProcessor implements ItemProcessor<Participant, Participa
 			hasMistake = true;
 		}
 		if (!Validate.isNameValide(participant.getFirstName())) {
+			System.out.println(participant.getFirstName());
 			mistake.setFirstName("incurrect");
 			hasMistake = true;
 		}
 		if (!Validate.isNameValide(participant.getLastName())) {
+			System.out.println(participant.getLastName());
 			mistake.setLastName("incurrect");
 			hasMistake = true;
 		}
@@ -73,7 +75,7 @@ public class ValidationProcessor implements ItemProcessor<Participant, Participa
 			mistake.setEmail("incurrect");
 			hasMistake = true;
 		}
-		if (Validate.isValidIndianMobileNumber(participant.getPhone())) {
+		if (!Validate.isValidIndianMobileNumber(participant.getPhone())) {
 			mistake.setPhone("incurrect");
 			hasMistake = true;
 		}
@@ -84,6 +86,8 @@ public class ValidationProcessor implements ItemProcessor<Participant, Participa
 
 		if (hasMistake) {
 			System.out.println(mistake);
+			mistake.setRowNo(participant.getRowNumber());
+			mistake.setSheetNumber(participant.getSheetNumber());
 			mistakesInExcelRepo.save(mistake);
 			return null; // Skip this participant
 		}
