@@ -116,7 +116,7 @@ public class ExcelParticipantReader implements ItemReader<Participant> {
 		try {
 			participant.setCountry(row.getCell(13).getStringCellValue());
 		} catch (Exception e) {}
-		participant.setRowNumber(row.getRowNum());
+		participant.setRowNumber(row.getRowNum() + 1);
 		participant.setSheetNumber(sheetNumber);
 		return participant;
 	}
