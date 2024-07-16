@@ -20,7 +20,7 @@ public class Chips {
 	@Id
 	private String chip;
 
-	private String pid;
+	private int pid;
 	private String name;
 //	@Past
 	@Temporal(TemporalType.DATE)
@@ -28,12 +28,9 @@ public class Chips {
 	private String gender;
 	private String race;
 	private String city;
-	@Column(nullable = false, unique = true)
 	private String phone;
-	@Column(nullable = false, unique = true)
 	private String email;
-	@Column(columnDefinition = "boolean default true")
-	private boolean smsSent;
+	private boolean smsSent = false;
 
 	public String getChip() {
 		return chip;
@@ -43,11 +40,11 @@ public class Chips {
 		this.chip = chip;
 	}
 
-	public String getPid() {
+	public int getPid() {
 		return pid;
 	}
 
-	public void setPid(String pid) {
+	public void setPid(int pid) {
 		this.pid = pid;
 	}
 

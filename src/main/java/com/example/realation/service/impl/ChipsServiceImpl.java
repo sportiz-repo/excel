@@ -45,7 +45,7 @@ public class ChipsServiceImpl implements ChipsService {
 	}
 
 	@Override
-	public Chips getChipByPid(String pid) {
+	public Chips getChipByPid(int pid) {
 		Optional<Chips> optionChips = chipsRepo.findByPid(pid);
 		if (optionChips.isPresent())
 			return optionChips.get();

@@ -75,8 +75,10 @@ public class ExcelUtil {
 							}
 							break;
 						case 1:
-							if (cell.getCellType().toString().equals("STRING")) {
-								chips.setPid(cell.getStringCellValue().toString().trim());
+							if (cell.getCellType().toString().equals("NUMERIC")) {
+								chips.setPid((int) cell.getNumericCellValue());
+							} else if (cell.getCellType().toString().equals("STRING")) {
+								chips.setPid(Integer.valueOf(cell.getStringCellValue()));
 							} else {
 								System.out.println("Row " + rowNumber + " Column " + cid + " Is not a string cell");
 								excelDataMistakesFlag = true;
@@ -173,7 +175,18 @@ public class ExcelUtil {
 									excelDataMistakesFlag = true;
 									mistakesInExcel.setPhone("incorrect");
 								}
-							} else {
+							} else if(cell.getCellType().toString().equals("STRING")) {
+								String phone = String.valueOf( cell.getStringCellValue());
+								if (Validate.isValidIndianMobileNumber(phone))
+									chips.setPhone(phone);
+								else {
+									System.out.println("Row " + rowNumber + " Column " + cid
+											+ " Is not a valid phone number " + phone);
+									excelDataMistakesFlag = true;
+									mistakesInExcel.setPhone("incorrect");
+								}
+							}
+							else {
 								System.out.println("Row " + rowNumber + " Column " + cid + " Is not a numeric cell");
 								excelDataMistakesFlag = true;
 								mistakesInExcel.setPhone("incorrect");

@@ -12,7 +12,7 @@ public interface ChipsService {
 
 	public Chips getChipById(String chip);
 
-	public Chips getChipByPid(String pid);
+	public Chips getChipByPid(int pid);
 
 	public List<Chips> getAllChips();
 

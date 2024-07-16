@@ -11,7 +11,7 @@ public class Validate {
 		}
 
 		String regex = "^[A-Za-z]+[ A-Za-z'.-]*$";
-		return name.length() >= 2 && name.length() <= 30 && name.matches(regex);
+		return name.length() >= 1 && name.length() <= 30 && name.matches(regex);
 	}
 
 	public static boolean idChipValide(String chipNumber) {
@@ -117,7 +117,7 @@ public class Validate {
 			age--;
 		}
 
-		return age >= 6 && age <= 110;
+		return age >= 5 && age <= 110;
 	}
 
 	public static boolean isEmailValid(String email) { // Renamed to isEmailValid
